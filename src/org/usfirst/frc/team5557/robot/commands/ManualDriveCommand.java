@@ -22,7 +22,7 @@ public class ManualDriveCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drive.drive();
+		Robot.drive.drive(1);
 	}
 
 	@Override

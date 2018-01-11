@@ -1,13 +1,13 @@
-package org.usfirst.frc.team5557.robot.commands;
+/*package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
 
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
+*//**
  * Basic Linear Movement in Autonomous
- */
+ *//*
 public class DriveForDistanceCommand extends Command {
 	private double distance;
 
@@ -40,3 +40,4 @@ public class DriveForDistanceCommand extends Command {
 		Robot.drive.stop();
 	}
 }
+*/

@@ -4,36 +4,29 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import org.usfirst.frc.team5557.robot.commands.AgitateCommand;
 import org.usfirst.frc.team5557.robot.commands.ClimbCommand;
-import org.usfirst.frc.team5557.robot.commands.ExampleCommand;
-import org.usfirst.frc.team5557.robot.commands.ShootCommandGroup;
 import org.usfirst.frc.team5557.robot.commands.SoftEStopCommand;
-import org.usfirst.frc.team5557.robot.commands.UltraDriveCommand;
+//import org.usfirst.frc.team5557.robot.commands.SonicDriveCommand;
+import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	// Joystick defined here
-	public static final Joystick driveStick = new Joystick(RobotMap.JOYSTICK_DRIVE);
+	
+	// Joysticks defined here
+	public static final Joystick driveStickOne = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
+	public static final Joystick driveStickTwo = new Joystick(RobotMap.JOYSTICK_DRIVE_TWO);
+	//Joystick map tracker 0 = arcade drive, 1 = dual stick drive
+	private int j_switch = 0;
 
 	// Buttons defined here
-	public final Button autoGearButton = new JoystickButton(driveStick, RobotMap.AUTOMATIC_GEAR_PLACEMENT_BUTTON);
-	public final Button shooterButton = new JoystickButton(driveStick, RobotMap.SHOOTER_BUTTON);
-	public final Button climberButton = new JoystickButton(driveStick, RobotMap.CLIMBER_BUTTON);
-	public final Button eStopButton = new JoystickButton(driveStick, RobotMap.EMERGENCY_STOP_BUTTON);
-	public final Button reverseClimbButton = new JoystickButton(driveStick, RobotMap.REVERSE_CLIMBER_BUTTON);
-	public final Button agitateButton = new JoystickButton(driveStick, RobotMap.COLLECTOR_BUTTON);
+	public final Button controlStickSwticher = new JoystickButton(driveStickOne, RobotMap.CONTROL_STICK_MAP_TOGGLE);
 	
 	public OI() {
-		autoGearButton.whenPressed(new UltraDriveCommand(400,.6));
-		shooterButton.whileHeld(new ShootCommandGroup());
-		agitateButton.whileHeld(new AgitateCommand());
-		climberButton.whileHeld(new ClimbCommand());
-		eStopButton.whenPressed(new SoftEStopCommand());
-		reverseClimbButton.whileHeld(new ClimbCommand(-1));
+		controlStickSwticher.whenPressed(new SwapDriveComand());
+		
 	}
 
 	

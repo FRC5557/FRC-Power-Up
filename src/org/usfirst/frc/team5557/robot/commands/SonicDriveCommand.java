@@ -1,17 +1,17 @@
-package org.usfirst.frc.team5557.robot.commands;
+/*package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
+*//**
  * Driving autonomously in a straight line up until certain distance using
  * MaxBotix Ultrasonic
- */
-public class UltraDriveCommand extends Command {
+ *//*
+public class SonicDriveCommand extends Command {
 	private double dis;
 	private double speed;
-	public UltraDriveCommand(double my_dis, double mspeed) {
+	public SonicDriveCommand(double my_dis, double mspeed) {
 		dis = my_dis;
 		speed = mspeed;
 		requires(Robot.sensors);
@@ -45,4 +45,4 @@ public class UltraDriveCommand extends Command {
 	protected void end() {
 		Robot.drive.stop();
 	}
-}
+}*/
