@@ -27,15 +27,15 @@ public class RobotMap {
 		public static int CLIMBER_BUTTON = 7;
 		public static int COLLECTOR_BUTTON = 9;
 		public static int REVERSE_CLIMBER_BUTTON = 8;
-		public static int EMERGENCY_STOP_BUTTON = 12;
-		public static int CAMERA_SWITCH = 4;
-		public static final int CONTROL_STICK_MAP_TOGGLE = 1;
+		public static int EMERGENCY_STOP_BUTTON = 10;
+		public static int CAMERA_SWITCH = 11;
+		public static final int CONTROL_STICK_MAP_TOGGLE = 12;
 			
 		// Motor controllers are mapped here
-		public static final int LEFT_FRONT_MOTOR = 1;
-		public static final int LEFT_REAR_MOTOR = 3;
-		public static final int RIGHT_FRONT_MOTOR = 7;
-		public static final int RIGHT_REAR_MOTOR = 4;
+		public static final int LEFT_FRONT_MOTOR = 0;
+		public static final int LEFT_REAR_MOTOR = 2;
+		public static final int RIGHT_FRONT_MOTOR = 1;
+		public static final int RIGHT_REAR_MOTOR = 3;
 		
 		public static final int COLLECTOR_MOTOR = 0;
 		public static final int ARM_MOTOR = 0;
