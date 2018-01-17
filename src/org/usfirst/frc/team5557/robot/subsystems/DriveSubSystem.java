@@ -82,6 +82,16 @@ public class DriveSubSystem extends Subsystem{
 		
 	}
 	
+	public void computerDrive(double magnitude, double turn) {
+		leftGroup.set(magnitude);
+		difDrive.arcadeDrive(turn,magnitude);
+	}
+
+    public void stop() {
+    	computerDrive(0,0);
+		
+	}
+	
 	
 
 }
