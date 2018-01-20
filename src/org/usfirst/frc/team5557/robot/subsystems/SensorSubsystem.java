@@ -4,14 +4,17 @@ import org.usfirst.frc.team5557.robot.Robot;
 import org.usfirst.frc.team5557.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
 
 /**
  * Subsystem containing all sensors for the robot
  */
 public class SensorSubsystem extends Subsystem {
-	public AnalogInput ultra = new AnalogInput(RobotMap.ULTRA_ANALOG);
+	//public AnalogInput ultra = new AnalogInput(RobotMap.ULTRA_ANALOG);
+	public Ultrasonic ultra = new Ultrasonic(RobotMap.ULTRASONIC_PING_PWM, RobotMap.ULTRASONIC_ECHO_PWM);
 
 	public SensorSubsystem() {
 		// Correctly initialize and set up encoders
@@ -32,10 +35,12 @@ public class SensorSubsystem extends Subsystem {
 	}
 
 	/**
-	 * For MaxBotix Ultrasonic
+	 * For Vex UltraSonic
+	 * TODO make it for MaxBotix Ultrasonic
 	 */
 	public double getUltra() {
-		return ultra.getVoltage() * RobotMap.MAXBOTIX_VOLTAGE_CONSTANT_MM;
+		//return ultra.getVoltage() * RobotMap.MAXBOTIX_VOLTAGE_CONSTANT_MM;
+		return ultra.getRangeMM();
 	}
 
 	public void resetEncoders() {
@@ -49,20 +54,22 @@ public class SensorSubsystem extends Subsystem {
 	 * them
 	 */
 	public double getDis() {
-		// double UL = Robot.drive.getTalon("UL").getEncPosition();
-		double BL = Math.abs(Robot.drive.getTalon(MotorType.kRearLeft).getEncPosition());
-		// double UR = Robot.drive.getTalon("UR").getEncPosition();
-		// double BR = Robot.drive.getTalon("BR").getEncPosition();
-		double avgDis = (BL)/RobotMap.ENCODER_CONVERSION;
+		
+		int FL = Robot.drive.getTalon(MotorType.kFrontLeft).getQuadraturePosition();
+		int BL = Math.abs(Robot.drive.getTalon(MotorType.kRearLeft).getQuadraturePosition());
+		int FR = Robot.drive.getTalon(MotorType.kFrontRight).getQuadraturePosition();
+		int BR = Robot.drive.getTalon(MotorType.kRearRight).getQuadraturePosition();
+		
+		double avgDis = (FL+BL+FR+BR)/4;
 		return avgDis;
 	}
 
 	public double getDis(MotorType m) {
-		return Robot.drive.getTalon(m).getEncPosition();
+		return Robot.drive.getTalon(m).getQuadraturePosition();
 	}
 
 	public double getSpeed(MotorType m) {
-		return Robot.drive.getTalon(m).getEncVelocity();
+		return Robot.drive.getTalon(m).getQuadratureVelocity();
 	}
 
 }

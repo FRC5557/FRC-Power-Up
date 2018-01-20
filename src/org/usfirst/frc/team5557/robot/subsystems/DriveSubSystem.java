@@ -3,10 +3,14 @@ import org.usfirst.frc.team5557.robot.OI;
 import org.usfirst.frc.team5557.robot.RobotMap;
 import org.usfirst.frc.team5557.robot.commands.ManualDriveCommand;
 
+import com.ctre.phoenix.motorcontrol.SensorCollection;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 
 
 public class DriveSubSystem extends Subsystem{
@@ -16,10 +20,10 @@ public class DriveSubSystem extends Subsystem{
 	private VictorSP rightFront = new VictorSP(RobotMap.RIGHT_FRONT_MOTOR);
 	private VictorSP rightRear = new VictorSP(RobotMap.RIGHT_REAR_MOTOR);
 	
-	/*private WPI_TalonSRX leftFront = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
-	private WPI_TalonSRX leftRear = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
-	private WPI_TalonSRX rightFront = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
-	private WPI_TalonSRX rightRear = new WPI_TalonSRX(RobotMap.RIGHT_REAR_MOTOR);*/
+	private WPI_TalonSRX leftFrontTal = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
+	private WPI_TalonSRX leftRearTal = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
+	private WPI_TalonSRX rightFrontTal = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
+	private WPI_TalonSRX rightRearTal = new WPI_TalonSRX(RobotMap.RIGHT_REAR_MOTOR);
 
 	SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFront, leftRear);
 	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFront, rightRear);
@@ -42,20 +46,20 @@ public class DriveSubSystem extends Subsystem{
 	}
 
 	
-/*	TalonSRX getTalon(MotorType m) {
+	SensorCollection getTalon(MotorType m) {
 		switch (m) {
 		case kFrontLeft:
-			return leftFront;
+			return new SensorCollection(leftFrontTal);
 		case kRearLeft:
-			return leftRear;
+			return new SensorCollection(leftRearTal);
 		case kFrontRight:
-			return rightFront;
+			return new SensorCollection(rightFrontTal);
 		case kRearRight:
-			return rightRear;
+			return new SensorCollection(rightRearTal);
 		default:
-			return leftFront;
+			return new SensorCollection(leftFrontTal);
 		}
-	}*/
+	}
 	
 	@Override
 	protected void initDefaultCommand() {

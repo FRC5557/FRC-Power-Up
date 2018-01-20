@@ -2,7 +2,7 @@ package org.usfirst.frc.team5557.robot.commands.autogroups;
 
 import org.usfirst.frc.team5557.robot.commands.DriveForDistanceCommand;
 import org.usfirst.frc.team5557.robot.commands.TurnForAngleCommand;
-import org.usfirst.frc.team5557.robot.commands.UltraDriveCommand;
+import org.usfirst.frc.team5557.robot.commands.SonicDriveCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;

@@ -53,5 +53,9 @@ public class RobotMap {
 		public static final double PID_DERIVATIVE = 0;
 		public static final double CLOSED_LOOP_RAMP_RATE = 0;
 		public static final double INTEGRAL_ZONE = 0;
+		
+		public static final int ULTRASONIC_PING_PWM = 9;
+		public static final int ULTRASONIC_ECHO_PWM = 8;
+		
 
 }
