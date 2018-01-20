@@ -79,6 +79,24 @@ public class Robot extends IterativeRobot {
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
+		
+		String gameData;
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if(gameData.charAt(0) == 'L')
+		{
+			//Put left auto code here
+			
+			
+			
+			
+		} else {
+			//Put right auto code here
+			
+			
+			
+		}
+		
+		
 	}
 
 	/**
