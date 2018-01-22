@@ -76,7 +76,7 @@ public class DriveSubSystem extends Subsystem{
 		double rotation2 = OI.driveStickOne.getTwist();
 		switch(layout) {
 		    case 1:
-		    	difDrive.arcadeDrive(rotation1,Y1);
+		    	difDrive.arcadeDrive(Y1,rotation1);
 		    	break;
 		    case -1:
 		    	difDrive.tankDrive(Y1, Y2);

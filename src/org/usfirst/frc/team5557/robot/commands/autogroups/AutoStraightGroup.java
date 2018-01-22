@@ -1,6 +1,6 @@
 package org.usfirst.frc.team5557.robot.commands.autogroups;
 
-import org.usfirst.frc.team5557.robot.commands.UltraDriveCommand;
+import org.usfirst.frc.team5557.robot.commands.SonicDriveCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
  */
 public class AutoStraightGroup extends CommandGroup {
 	public AutoStraightGroup(boolean shoot) {
-		addSequential(new UltraDriveCommand(400, .6));// Drive towards peg up until
+		addSequential(new SonicDriveCommand(400, .6));// Drive towards peg up until
 													// certain distance
 		addSequential(new WaitCommand(1000));// Extra time for gear to get on
 		// peg

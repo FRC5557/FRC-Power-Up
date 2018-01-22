@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team5557.robot.commands.autogroups.AutoLeftGroup;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
 import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
 
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
+		chooser.addObject("Left DS No Shoot", new AutoLeftGroup(false));
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 

@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Subsystem containing all sensors for the robot
  */
 public class SensorSubsystem extends Subsystem {
-	//public AnalogInput ultra = new AnalogInput(RobotMap.ULTRA_ANALOG);
-	public Ultrasonic ultra = new Ultrasonic(RobotMap.ULTRASONIC_PING_PWM, RobotMap.ULTRASONIC_ECHO_PWM);
+	public AnalogInput ultra = new AnalogInput(RobotMap.ULTRA_ANAL);
+	//private Ultrasonic ultra = new Ultrasonic(5,RobotMap.ULTRA_ANAL);
 
 	public SensorSubsystem() {
+		//ultra.setAutomaticMode(true);
+		
 		// Correctly initialize and set up encoders
 		/*for (MotorType m : MotorType.values()) {
 			Robot.drive.getTalon(m).setFeedbackDevice(RobotMap.TALON_FEEDBACK_DEVICE);
@@ -39,8 +41,9 @@ public class SensorSubsystem extends Subsystem {
 	 * TODO make it for MaxBotix Ultrasonic
 	 */
 	public double getUltra() {
-		//return ultra.getVoltage() * RobotMap.MAXBOTIX_VOLTAGE_CONSTANT_MM;
-		return ultra.getRangeMM();
+		//return ultra.getRangeMM();
+		return ultra.getVoltage() * RobotMap.MAXBOTIX_VOLTAGE_CONSTANT_MM;
+		
 	}
 
 	public void resetEncoders() {
