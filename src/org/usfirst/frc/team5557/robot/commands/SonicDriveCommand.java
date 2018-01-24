@@ -30,7 +30,7 @@ public class SonicDriveCommand extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		if (Robot.sensors.getUltra() <= dis) {
+		if (Robot.sensors.getUltraWithVoltage() <= dis) {
 			return true;
 		}
 		return false;

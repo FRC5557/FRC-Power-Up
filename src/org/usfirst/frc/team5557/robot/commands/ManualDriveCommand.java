@@ -23,8 +23,8 @@ public class ManualDriveCommand extends Command {
 	@Override
 	protected void execute() {
 		Robot.drive.drive(1);
-		System.out.println(Robot.sensors.getUltra());
-	}
+		System.out.println(Robot.sensors.getUltraWithVoltage());
+	} 
 
 	@Override
 	protected boolean isFinished() {

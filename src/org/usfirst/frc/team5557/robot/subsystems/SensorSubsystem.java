@@ -37,8 +37,8 @@ public class SensorSubsystem extends Subsystem {
 	}
 
 	/**
-	 * For Vex UltraSonic
-	 * TODO make it for MaxBotix Ultrasonic
+	 * For MaxBotix Ultrasonic
+	 * Converts the bits returned from the ultrasonic sensor into millimeters
 	 */
 	public double getUltraWithBits() {
 		//return ultra.getRangeMM();
@@ -48,13 +48,20 @@ public class SensorSubsystem extends Subsystem {
 		
 	}
 	
-	public double getUltraWithvoltage() {
+	/*
+	 * For MaxBotix Ultrasonic
+	 * Converts Voltage receieved from ultrasonic sensor into millimeters
+	 */
+	
+	public double getUltraWithVoltage() {
 		double mV = (ultra.getVoltage() / 1024) * 1000; 
 		// (MM / 5) * 4.88 mV
 		// 4.88 mV = 5mm
 		double voltageInMM = (mV / 4.88) * 5;
 		
 		return voltageInMM; 
+		
+		
 		
 	}
 	
