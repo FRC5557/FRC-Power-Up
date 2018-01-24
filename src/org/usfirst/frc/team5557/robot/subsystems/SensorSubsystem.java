@@ -40,11 +40,25 @@ public class SensorSubsystem extends Subsystem {
 	 * For Vex UltraSonic
 	 * TODO make it for MaxBotix Ultrasonic
 	 */
-	public double getUltra() {
+	public double getUltraWithBits() {
 		//return ultra.getRangeMM();
-		return ultra.getVoltage() * RobotMap.MAXBOTIX_VOLTAGE_CONSTANT_MM;
+		//return ultra.getVoltage() * RobotMap.MAXBOTIX_VOLTAGE_CONSTANT_MM; 
+		
+		return ultra.getAverageBits() * 5;
 		
 	}
+	
+	public double getUltraWithvoltage() {
+		double mV = (ultra.getVoltage() / 1024) * 1000; 
+		// (MM / 5) * 4.88 mV
+		// 4.88 mV = 5mm
+		double voltageInMM = (mV / 4.88) * 5;
+		
+		return voltageInMM; 
+		
+	}
+	
+	
 
 	public void resetEncoders() {
 		/*for (MotorType m : MotorType.values()) {
