@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class SensorSubsystem extends Subsystem {
 	public AnalogInput ultra = new AnalogInput(RobotMap.ULTRA_ANAL);
-	//private Ultrasonic ultra = new Ultrasonic(5,RobotMap.ULTRA_ANAL);
 
 	public SensorSubsystem() {
 		//ultra.setAutomaticMode(true);
@@ -54,10 +53,16 @@ public class SensorSubsystem extends Subsystem {
 	 */
 	
 	public double getUltraWithVoltage() {
-		double mV = (ultra.getVoltage() / 1024) * 1000; 
+		//double mV = (ultra.getVoltage() / 1024) * 1000; 
+		double mV = (ultra.getVoltage() / 1000) * 1024;
+		
+		//double mV = ultra.getVoltage() * 1024;
+		
 		// (MM / 5) * 4.88 mV
 		// 4.88 mV = 5mm
 		double voltageInMM = (mV / 4.88) * 5;
+		
+		System.out.println("V" + ultra.getVoltage());
 		
 		return voltageInMM; 
 		
@@ -68,26 +73,37 @@ public class SensorSubsystem extends Subsystem {
 	
 
 	public void resetEncoders() {
-		/*for (MotorType m : MotorType.values()) {
-			Robot.drive.getTalon(m).setPosition(0);
-		}*/
+		for (MotorType m : MotorType.values()) {
+			Robot.drive.getTalon(m).setQuadraturePosition(0, 1000);
+		}
 	}
 
 	/**
 	 * Gets the position values from each Talon Feedback Device and averages
 	 * them
 	 */
-	public double getDis() {
-		
-		int FL = Robot.drive.getTalon(MotorType.kFrontLeft).getQuadraturePosition();
-		int BL = Math.abs(Robot.drive.getTalon(MotorType.kRearLeft).getQuadraturePosition());
-		int FR = Robot.drive.getTalon(MotorType.kFrontRight).getQuadraturePosition();
-		int BR = Robot.drive.getTalon(MotorType.kRearRight).getQuadraturePosition();
-		
-		double avgDis = (FL+BL+FR+BR)/4;
-		return avgDis;
-	}
+	public double getDis() { //don't use this on the testing bot one of its gear boxes is slower than the other
+		//10.71:1 ration cim to hex shaft
+		//1:1 for hex shaft to wheels
 
+		int BR = -1*(Robot.drive.getTalon(MotorType.kRearRight).getQuadraturePosition());
+		int FL = Robot.drive.getTalon(MotorType.kFrontLeft).getQuadraturePosition();
+		
+		System.out.printf("Front Left %d, Back Right: %d \n", FL, BR);
+		
+		double averageRote = (BR+FL)/2;
+		return averageRote*RobotMap.WHEEL_SIZE;
+	}
+	
+	public double getDisBalanced(){ //one side of the robot is slower than the other so this gets a 
+		int BL = -1*(Robot.drive.getTalon(MotorType.kFrontLeft).getQuadraturePosition());
+		int BR = Robot.drive.getTalon(MotorType.kFrontRight).getQuadraturePosition();
+		
+		
+		double averageRote = (BL+BR)/2;
+		return averageRote*RobotMap.WHEEL_SIZE;
+	}
+ 
 	public double getDis(MotorType m) {
 		return Robot.drive.getTalon(m).getQuadraturePosition();
 	}

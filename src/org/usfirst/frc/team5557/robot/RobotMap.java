@@ -7,6 +7,10 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
  * to a variable name. This provides flexibility changing wiring, makes checking
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
+ * 
+ * Also contains some constants that were using 
+ *     ie. wheel size, voltage constants
+ * 
  */
 public class RobotMap {
 	// For example to map the left and right motors, you could define the
@@ -32,10 +36,10 @@ public class RobotMap {
 		public static final int CONTROL_STICK_MAP_TOGGLE = 12;
 			
 		// Motor controllers are mapped here
-		public static final int LEFT_FRONT_MOTOR = 0;
-		public static final int LEFT_REAR_MOTOR = 2;
-		public static final int RIGHT_FRONT_MOTOR = 1;
-		public static final int RIGHT_REAR_MOTOR = 3;
+		public static final int LEFT_REAR_MOTOR = 1;
+		public static final int LEFT_FRONT_MOTOR = 2; //Encoder on this one
+		public static final int RIGHT_FRONT_MOTOR = 3;
+		public static final int RIGHT_REAR_MOTOR = 4; //Encoder on this one
 		
 		public static final int COLLECTOR_MOTOR = 0;
 		public static final int ARM_MOTOR = 0;
@@ -53,7 +57,7 @@ public class RobotMap {
 		public static final double PID_DERIVATIVE = 0;
 		public static final double CLOSED_LOOP_RAMP_RATE = 0;
 		public static final double INTEGRAL_ZONE = 0;
-		
+		public static final double WHEEL_SIZE = 15.24; //wheel size in cm
 		public static final int ULTRA_ANAL = 0;
 		public static final float MAXBOTIX_VOLTAGE_CONSTANT_MM = 1024f;
 		

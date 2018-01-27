@@ -40,6 +40,8 @@ public class Robot extends IterativeRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		chooser.addObject("Left DS No Shoot", new AutoLeftGroup(false));
 		SmartDashboard.putData("Auto mode", chooser);
+		sensors.resetEncoders();
+		
 	}
 
 	/**

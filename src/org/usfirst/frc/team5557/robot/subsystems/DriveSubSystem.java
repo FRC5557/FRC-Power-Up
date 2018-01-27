@@ -15,18 +15,13 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 
 public class DriveSubSystem extends Subsystem{
 
-	private VictorSP leftFront = new VictorSP(RobotMap.LEFT_FRONT_MOTOR);
-	private VictorSP leftRear = new VictorSP(RobotMap.LEFT_REAR_MOTOR);
-	private VictorSP rightFront = new VictorSP(RobotMap.RIGHT_FRONT_MOTOR);
-	private VictorSP rightRear = new VictorSP(RobotMap.RIGHT_REAR_MOTOR);
-	
 	private WPI_TalonSRX leftFrontTal = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
 	private WPI_TalonSRX leftRearTal = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
 	private WPI_TalonSRX rightFrontTal = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
 	private WPI_TalonSRX rightRearTal = new WPI_TalonSRX(RobotMap.RIGHT_REAR_MOTOR);
 
-	SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFront, leftRear);
-	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFront, rightRear);
+	SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFrontTal, leftRearTal);
+	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFrontTal, rightRearTal);
 	DifferentialDrive difDrive = new DifferentialDrive(leftGroup, rightGroup);
 
 	public DriveSubSystem() {
@@ -76,7 +71,7 @@ public class DriveSubSystem extends Subsystem{
 		double rotation2 = OI.driveStickOne.getTwist();
 		switch(layout) {
 		    case 1:
-		    	difDrive.arcadeDrive(Y1,rotation1);
+		    	difDrive.arcadeDrive(-1*(Y1),rotation1);
 		    	break;
 		    case -1:
 		    	difDrive.tankDrive(Y1, Y2);

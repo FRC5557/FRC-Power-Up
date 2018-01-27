@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
+import org.usfirst.frc.team5557.robot.OI;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -23,7 +24,8 @@ public class ManualDriveCommand extends Command {
 	@Override
 	protected void execute() {
 		Robot.drive.drive(1);
-		System.out.println(Robot.sensors.getUltraWithVoltage());
+		System.out.println(Robot.sensors.getDis());
+		System.out.println("Joystick Y axis: " + OI.driveStickZero.getY());
 	} 
 
 	@Override
