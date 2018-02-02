@@ -92,7 +92,7 @@ public class SensorSubsystem extends Subsystem {
 		System.out.printf("Front Left %d, Back Right: %d \n", FL, BR);
 		
 		double averageRote = (BR+FL)/2;
-		return averageRote*RobotMap.WHEEL_SIZE;
+		return averageRote/RobotMap.WHEEL_SIZE;
 	}
 	
 	public double getDisBalanced(){ //one side of the robot is slower than the other so this gets a 

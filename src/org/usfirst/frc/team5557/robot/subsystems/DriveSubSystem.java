@@ -38,6 +38,7 @@ public class DriveSubSystem extends Subsystem{
 
 		// This suppresses the "Output not frequent enough" message
 		difDrive.setSafetyEnabled(false);
+		rightRearTal.setInverted(true);
 	}
 
 	
@@ -71,7 +72,7 @@ public class DriveSubSystem extends Subsystem{
 		double rotation2 = OI.driveStickOne.getTwist();
 		switch(layout) {
 		    case 1:
-		    	difDrive.arcadeDrive(-1*(Y1),rotation1);
+		    	difDrive.arcadeDrive(Y1,rotation1);
 		    	break;
 		    case -1:
 		    	difDrive.tankDrive(Y1, Y2);

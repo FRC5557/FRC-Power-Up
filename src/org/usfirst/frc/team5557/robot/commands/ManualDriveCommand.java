@@ -24,8 +24,8 @@ public class ManualDriveCommand extends Command {
 	@Override
 	protected void execute() {
 		Robot.drive.drive(1);
-		System.out.println(Robot.sensors.getDis());
-		System.out.println("Joystick Y axis: " + OI.driveStickZero.getY());
+		//System.out.println(Robot.sensors.getDis());
+		//System.out.println("Joystick Y axis: " + OI.driveStickZero.getY());
 	} 
 
 	@Override
