@@ -7,6 +7,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -50,6 +51,7 @@ public class Robot extends IterativeRobot {
 		 new Thread(() -> {
              UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
              camera.setResolution(640, 480);
+             camera.setExposureManual(40);
              
              CvSink cvSink = CameraServer.getInstance().getVideo();
              CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
@@ -64,6 +66,20 @@ public class Robot extends IterativeRobot {
                  outputStream.putFrame(output);
              }
          }).start();
+		
+	}
+	
+	
+	//Put println() here
+	@Override
+	public void robotPeriodic() {
+		super.robotPeriodic();
+		SmartDashboard.putNumber("Ultra (mm): ", sensors.getUltraWithBits());
+		SmartDashboard.putNumber("Encoder Right (cm): ", sensors.getDis(MotorType.kFrontRight));
+		SmartDashboard.putNumber("Encoder Left (cm): ", sensors.getDis(MotorType.kRearLeft));
+		SmartDashboard.putNumber("Left Stick", OI.driveStickZero.getY());
+		SmartDashboard.putNumber("Right Stick", OI.driveStickOne.getY());
+		
 		
 	}
 

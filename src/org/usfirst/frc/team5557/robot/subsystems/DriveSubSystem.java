@@ -38,7 +38,6 @@ public class DriveSubSystem extends Subsystem{
 
 		// This suppresses the "Output not frequent enough" message
 		difDrive.setSafetyEnabled(false);
-		rightRearTal.setInverted(true);
 	}
 
 	

@@ -53,19 +53,15 @@ public class SensorSubsystem extends Subsystem {
 	 */
 	
 	public double getUltraWithVoltage() {
-		//double mV = (ultra.getVoltage() / 1024) * 1000; 
-		double mV = (ultra.getVoltage() / 1000) * 1024;
-		
-		//double mV = ultra.getVoltage() * 1024;
-		
-		// (MM / 5) * 4.88 mV
-		// 4.88 mV = 5mm
-		double voltageInMM = (mV / 4.88) * 5;
-		
-		System.out.println("V" + ultra.getVoltage());
-		
-		return voltageInMM; 
-		
+		int[] arr = new int[10];
+		int s = 0, min = 1000000, max= -500;
+		for(int i = 0; i < 10; i++){
+			arr[i] = (int) Math.floor(ultra.getVoltage() * RobotMap.MAXBOTIX_VOLTAGE_CONSTANT_MM);
+			s += arr[i];
+			if(arr[i] < min) min = arr[i];
+			if(arr[i] > max) max = arr[i];
+		}
+		return (int)((s-min-max)/8);
 		
 		
 	}
@@ -95,17 +91,18 @@ public class SensorSubsystem extends Subsystem {
 		return averageRote/RobotMap.WHEEL_SIZE;
 	}
 	
-	public double getDisBalanced(){ //one side of the robot is slower than the other so this gets a 
+	public double getDisBalanced(){ //one side of the robot is slower than the other so this gets a TODO:Balance this
 		int BL = -1*(Robot.drive.getTalon(MotorType.kFrontLeft).getQuadraturePosition());
 		int BR = Robot.drive.getTalon(MotorType.kFrontRight).getQuadraturePosition();
 		
 		
 		double averageRote = (BL+BR)/2;
-		return averageRote*RobotMap.WHEEL_SIZE;
+		return averageRote/RobotMap.WHEEL_SIZE;
 	}
  
 	public double getDis(MotorType m) {
-		return Robot.drive.getTalon(m).getQuadraturePosition();
+		int encoder = Robot.drive.getTalon(m).getQuadraturePosition();
+		return encoder/RobotMap.WHEEL_SIZE;
 	}
 
 	public double getSpeed(MotorType m) {
