@@ -58,8 +58,10 @@ public class RobotMap {
 		public static final double CLOSED_LOOP_RAMP_RATE = 0;
 		public static final double INTEGRAL_ZONE = 0;
 		public static final double WHEEL_SIZE = 15.24; //wheel size in cm
+		public static final double WHEEL_CIRC = 95.76; //wheel circumference in cm
 		public static final int ULTRA_ANAL = 0;
 		public static final float MAXBOTIX_VOLTAGE_CONSTANT_MM = 1024f;
+		
 		
 
 }

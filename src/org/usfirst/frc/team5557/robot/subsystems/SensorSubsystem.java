@@ -39,13 +39,6 @@ public class SensorSubsystem extends Subsystem {
 	 * For MaxBotix Ultrasonic
 	 * Converts the bits returned from the ultrasonic sensor into millimeters
 	 */
-	public double getUltraWithBits() {
-		//return ultra.getRangeMM();
-		//return ultra.getVoltage() * RobotMap.MAXBOTIX_VOLTAGE_CONSTANT_MM; 
-		
-		return ultra.getAverageBits() * 5;
-		
-	}
 	
 	/*
 	 * For MaxBotix Ultrasonic
@@ -70,7 +63,7 @@ public class SensorSubsystem extends Subsystem {
 
 	public void resetEncoders() {
 		for (MotorType m : MotorType.values()) {
-			Robot.drive.getTalon(m).setQuadraturePosition(0, 1000);
+			Robot.drive.getTalonSensorC(m).setQuadraturePosition(0, 1000);
 		}
 	}
 
@@ -82,8 +75,8 @@ public class SensorSubsystem extends Subsystem {
 		//10.71:1 ration cim to hex shaft
 		//1:1 for hex shaft to wheels
 
-		int BR = -1*(Robot.drive.getTalon(MotorType.kRearRight).getQuadraturePosition());
-		int FL = Robot.drive.getTalon(MotorType.kFrontLeft).getQuadraturePosition();
+		int BR = -1*(Robot.drive.getTalonSensorC(MotorType.kRearRight).getQuadraturePosition());
+		int FL = Robot.drive.getTalonSensorC(MotorType.kFrontLeft).getQuadraturePosition();
 		
 		System.out.printf("Front Left %d, Back Right: %d \n", FL, BR);
 		
@@ -92,8 +85,8 @@ public class SensorSubsystem extends Subsystem {
 	}
 	
 	public double getDisBalanced(){ //one side of the robot is slower than the other so this gets a TODO:Balance this
-		int BL = -1*(Robot.drive.getTalon(MotorType.kFrontLeft).getQuadraturePosition());
-		int BR = Robot.drive.getTalon(MotorType.kFrontRight).getQuadraturePosition();
+		int BL = -1*(Robot.drive.getTalonSensorC(MotorType.kFrontLeft).getQuadraturePosition());
+		int BR = Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition();
 		
 		
 		double averageRote = (BL+BR)/2;
@@ -101,12 +94,12 @@ public class SensorSubsystem extends Subsystem {
 	}
  
 	public double getDis(MotorType m) {
-		int encoder = Robot.drive.getTalon(m).getQuadraturePosition();
-		return encoder/RobotMap.WHEEL_SIZE;
+		int encoder = Robot.drive.getTalonSensorC(m).getQuadraturePosition();
+		return (encoder/4000)*RobotMap.WHEEL_CIRC;
 	}
 
 	public double getSpeed(MotorType m) {
-		return Robot.drive.getTalon(m).getQuadratureVelocity();
+		return Robot.drive.getTalonSensorC(m).getQuadratureVelocity();
 	}
 
 }

@@ -74,11 +74,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotPeriodic() {
 		super.robotPeriodic();
-		SmartDashboard.putNumber("Ultra (mm): ", sensors.getUltraWithBits());
+		SmartDashboard.putNumber("Ultra (mm): ", sensors.getUltraWithVoltage());
 		SmartDashboard.putNumber("Encoder Right (cm): ", sensors.getDis(MotorType.kFrontRight));
 		SmartDashboard.putNumber("Encoder Left (cm): ", sensors.getDis(MotorType.kRearLeft));
 		SmartDashboard.putNumber("Left Stick", OI.driveStickZero.getY());
 		SmartDashboard.putNumber("Right Stick", OI.driveStickOne.getY());
+		System.out.println(Robot.drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition());
 		
 		
 	}
@@ -126,15 +127,12 @@ public class Robot extends IterativeRobot {
 		
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		if(gameData.charAt(0) == 'L')
+		if(gameData.charAt(0) == 'R')
 		{
-			//Put left auto code here
-			
-			
-			
-			
+			new AutoLeftGroup(false).start();
+			//Robot.drive.computerDrive(.5, 0);
 		} else {
-			//Put right auto code here
+			//Put left auto code here
 			
 			
 			

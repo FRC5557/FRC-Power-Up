@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5557.robot.subsystems;
 import org.usfirst.frc.team5557.robot.OI;
+import org.usfirst.frc.team5557.robot.Robot;
 import org.usfirst.frc.team5557.robot.RobotMap;
 import org.usfirst.frc.team5557.robot.commands.ManualDriveCommand;
 
@@ -41,7 +42,7 @@ public class DriveSubSystem extends Subsystem{
 	}
 
 	
-	SensorCollection getTalon(MotorType m) {
+	public SensorCollection getTalonSensorC(MotorType m) {
 		switch (m) {
 		case kFrontLeft:
 			return new SensorCollection(leftFrontTal);
@@ -82,15 +83,33 @@ public class DriveSubSystem extends Subsystem{
 	}
 	
 	public void computerDrive(double magnitude, double turn) {
-		leftGroup.set(magnitude);
-		difDrive.arcadeDrive(turn,magnitude);
+		difDrive.arcadeDrive(magnitude, turn);
 	}
 
     public void stop() {
     	computerDrive(0,0);
 		
 	}
-	
-	
+
+
+	public WPI_TalonSRX getTalon(MotorType m) {
+		// TODO Auto-generated method stub		
+		switch (m) {
+		case kFrontLeft:
+			return leftFrontTal;
+		case kRearLeft:
+			return leftRearTal;
+		case kFrontRight:
+			return rightFrontTal;
+		case kRearRight:
+			return rightRearTal;
+		default:
+			return leftFrontTal;
+		}
+
+	}
+
+
+		
 
 }

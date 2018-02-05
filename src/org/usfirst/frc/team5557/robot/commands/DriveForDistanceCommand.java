@@ -19,6 +19,7 @@ public class DriveForDistanceCommand extends Command {
 	@Override
 	protected void initialize() {
 		Robot.sensors.resetEncoders();
+		System.out.println("DriveForDistance Initialized");
 	}
 
 	@Override
@@ -28,9 +29,10 @@ public class DriveForDistanceCommand extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		if (Robot.sensors.getDis(MotorType.kFrontLeft) <= distance) {
+		if (Math.abs(Robot.sensors.getDis(MotorType.kRearLeft)) <= distance) {
 			return false;
 		} else {
+			System.out.println("DriveForDistance isFinished");
 			return true;
 		}
 	}
