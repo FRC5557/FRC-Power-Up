@@ -33,16 +33,17 @@ public class RobotMap {
 		public static int REVERSE_CLIMBER_BUTTON = 8;
 		public static int EMERGENCY_STOP_BUTTON = 10;
 		public static int CAMERA_SWITCH = 11;
-		public static final int CONTROL_STICK_MAP_TOGGLE = 12;
+		public static final int RAISE_ARM_BUTTON = 1;
 			
 		// Motor controllers are mapped here
 		public static final int LEFT_REAR_MOTOR = 4;
 		public static final int LEFT_FRONT_MOTOR = 3; //Encoder on this one
-		public static final int RIGHT_FRONT_MOTOR = 2;
-		public static final int RIGHT_REAR_MOTOR = 1; //Encoder on this one
+		public static final int RIGHT_FRONT_MOTOR = 2;//Encoder on this one
+		public static final int RIGHT_REAR_MOTOR = 1; 
 		
 		public static final int COLLECTOR_MOTOR = 0;
-		public static final int ARM_MOTOR = 0;
+		public static final int LOWER_ARM_MOTOR_LEFT = 6;
+		public static final int LOWER_ARM_MOTOR_RIGHT = 5;
 		public static final int CLAW_MOTOR = 0;
 		
 		// Constants for encoders connected to Talon SRX

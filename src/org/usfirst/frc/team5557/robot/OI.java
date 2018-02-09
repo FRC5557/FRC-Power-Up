@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team5557.robot.commands.ClimbCommand;
+import org.usfirst.frc.team5557.robot.commands.DanceCommand;
+import org.usfirst.frc.team5557.robot.commands.RaiseArmCommand;
 import org.usfirst.frc.team5557.robot.commands.SoftEStopCommand;
 //import org.usfirst.frc.team5557.robot.commands.SonicDriveCommand;
 import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
@@ -18,14 +20,12 @@ public class OI {
 	// Joysticks defined here
 	public static final Joystick driveStickZero = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
 	public static final Joystick driveStickOne = new Joystick(RobotMap.JOYSTICK_DRIVE_TWO);
-	//Joystick map tracker 0 = arcade drive, 1 = dual stick drive
-	private int j_switch = 0;
 
 	// Buttons defined here
-	public final Button controlStickSwticher = new JoystickButton(driveStickZero, RobotMap.CONTROL_STICK_MAP_TOGGLE);
+	public final Button raiseArmButton = new JoystickButton(driveStickZero, RobotMap.RAISE_ARM_BUTTON);
 	
 	public OI() {
-		controlStickSwticher.whenPressed(new SwapDriveComand());
+		raiseArmButton.whileHeld(new RaiseArmCommand());
 		
 	}
 

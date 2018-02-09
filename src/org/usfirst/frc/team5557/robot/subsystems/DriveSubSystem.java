@@ -24,6 +24,8 @@ public class DriveSubSystem extends Subsystem{
 	SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFrontTal, leftRearTal);
 	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFrontTal, rightRearTal);
 	DifferentialDrive difDrive = new DifferentialDrive(leftGroup, rightGroup);
+	
+	public double left, right;
 
 	public DriveSubSystem() {
 		
@@ -67,23 +69,14 @@ public class DriveSubSystem extends Subsystem{
 		double Y1 = -OI.driveStickZero.getY();
 		double rotation1 = OI.driveStickZero.getTwist();
 		
-		double X2 = -OI.driveStickOne.getX();
-		double Y2 = -OI.driveStickOne.getY();
-		double rotation2 = OI.driveStickOne.getTwist();
-		switch(layout) {
-		    case 1:
-		    	difDrive.arcadeDrive(Y1,rotation1);
-		    	break;
-		    case -1:
-		    	difDrive.tankDrive(Y1, Y2);
-		    	break;
-		    	
-		}
+		difDrive.arcadeDrive(Y1,rotation1);
 		
 	}
 	
-	public void computerDrive(double magnitude, double turn) {
-		difDrive.arcadeDrive(magnitude, turn);
+	public void computerDrive(double leftSpeed, double rightSpeed) {
+		left = leftSpeed;
+		right = rightSpeed;
+		difDrive.tankDrive(leftSpeed, rightSpeed);
 	}
 
     public void stop() {

@@ -10,9 +10,12 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 //
 public class DriveForDistanceCommand extends Command {
 	private double distance;
+	double dif;
+	double angle;
 
 	public DriveForDistanceCommand(double distance) {
 		requires(Robot.drive);
+		requires(Robot.sensors);
 		this.distance = distance;
 	}
 
@@ -24,7 +27,8 @@ public class DriveForDistanceCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drive.computerDrive(.5, 0);
+		//TODO Balance motors using PID instead of manual motor speeds
+		Robot.drive.computerDrive(.5, .48); 
 	}
 
 	@Override

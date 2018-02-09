@@ -7,6 +7,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5557.robot.commands.autogroups.AutoLeftGroup;
+import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
 import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
 
@@ -31,7 +33,9 @@ public class Robot extends IterativeRobot {
 	
 	public static final DriveSubSystem drive = new DriveSubSystem();
 	public static final SensorSubsystem sensors = new SensorSubsystem();
+	public static final ArmSubsystem arm = new ArmSubsystem();
 	public static OI oi;
+	public static Preferences prefs = Preferences.getInstance();
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -79,7 +83,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Encoder Left (cm): ", sensors.getDis(MotorType.kRearLeft));
 		SmartDashboard.putNumber("Left Stick", OI.driveStickZero.getY());
 		SmartDashboard.putNumber("Right Stick", OI.driveStickOne.getY());
-		System.out.println(Robot.drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition());
+		SmartDashboard.putNumber("left encoder ticks: ", drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition());
+		prefs.getDouble("ArmUpVoltage", 0);
 		
 		
 	}
@@ -113,14 +118,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
-
+		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-
+		
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
