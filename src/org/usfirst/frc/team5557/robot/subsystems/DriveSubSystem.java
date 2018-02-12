@@ -69,8 +69,6 @@ public class DriveSubSystem extends Subsystem{
 		double Y1 = -OI.driveStickZero.getY();
 		double rotation1 = OI.driveStickZero.getTwist();
 		
-		//double Y2 = -OI.driveStickOne.getY();
-		
 		difDrive.arcadeDrive(Y1,rotation1);
 		
 	}
