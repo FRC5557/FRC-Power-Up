@@ -41,10 +41,13 @@ public class RobotMap {
 		public static final int RIGHT_FRONT_MOTOR = 2;//Encoder on this one
 		public static final int RIGHT_REAR_MOTOR = 1; 
 		
-		public static final int COLLECTOR_MOTOR = 0;
+		//Arm motors
 		public static final int LOWER_ARM_MOTOR_LEFT = 6;
 		public static final int LOWER_ARM_MOTOR_RIGHT = 5;
-		public static final int CLAW_MOTOR = 0;
+		public static final int WRIST_MOTOR_LEFT = 7;
+		public static final int WRIST_MOTOR_RIGHT = 8;
+		public static final int COLLECTOR_MOTOR_LEFT = 9;
+		public static final int COLLECTOR_MOTOR_RIGHT = 10;
 		
 		// Constants for encoders connected to Talon SRX
 		public static final float PEAK_OUTPUT_VOLTAGE = 10f;
