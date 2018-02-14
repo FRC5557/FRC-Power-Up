@@ -7,6 +7,7 @@ import org.usfirst.frc.team5557.robot.commands.ManualDriveCommand;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -62,17 +63,29 @@ public class DriveSubSystem extends Subsystem{
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new ManualDriveCommand());
+		OI.driveStickZero.setXChannel(0);
+		OI.driveStickZero.setTwistChannel(3);
+		OI.driveStickZero.setThrottleChannel(4);
 	}
 	
 	public void drive(int layout) {
-		double X1 = -OI.driveStickZero.getX();
+		double X1 = OI.driveStickZero.getX();
 		double Y1 = -OI.driveStickZero.getY();
-		double rotation1 = OI.driveStickZero.getTwist();
+		double Z1 = -OI.driveStickZero.getZ();
+		double triggerThrottle = getGameCubeTrotle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
 		
-		//double Y2 = -OI.driveStickOne.getY();
+		difDrive.arcadeDrive(triggerThrottle,X1);
 		
-		difDrive.arcadeDrive(Y1,rotation1);
-		
+	}
+	
+	public double getGameCubeTrotle(double leftT, double rightT){
+		double fThrottle = 0;
+		if(rightT > -.74){ //forward input will always take priority over reverse input
+			fThrottle = (rightT*(1/1.6)+.47);
+		}else if(leftT > -.74){
+			fThrottle = -(leftT*(1/1.6)+.47);
+		}
+		return fThrottle;
 	}
 	
 	public void computerDrive(double leftSpeed, double rightSpeed) {

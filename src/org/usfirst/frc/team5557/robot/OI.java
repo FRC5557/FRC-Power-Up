@@ -19,7 +19,7 @@ public class OI {
 	
 	// Joysticks defined here
 	public static final Joystick driveStickZero = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
-	public static final Joystick driveStickOne = new Joystick(RobotMap.JOYSTICK_DRIVE_TWO);
+	public static final Joystick driveStickOne = new Joystick(RobotMap.JOYSTICK_DRIVE_ONE);
 
 	// Buttons defined here
 	public final Button raiseArmButton = new JoystickButton(driveStickZero, RobotMap.RAISE_ARM_BUTTON);
