@@ -23,10 +23,11 @@ public class OI {
 
 	// Buttons defined here
 	public final Button raiseArmButton = new JoystickButton(driveStickZero, RobotMap.RAISE_ARM_BUTTON);
+	public final Button swapControllerButton = new JoystickButton(driveStickZero, RobotMap.SWAP_CONTROLLER_BUTTON);
 	
 	public OI() {
 		raiseArmButton.whileHeld(new RaiseArmCommand());
-		
+		swapControllerButton.whenPressed(new SwapDriveComand("CONTROLLER"));
 	}
 
 	

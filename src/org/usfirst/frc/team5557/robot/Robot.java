@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
 import org.usfirst.frc.team5557.robot.commands.autogroups.AutoLeftGroup;
 import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
+import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
 import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
 
@@ -34,11 +36,15 @@ public class Robot extends IterativeRobot {
 	public static final DriveSubSystem drive = new DriveSubSystem();
 	public static final SensorSubsystem sensors = new SensorSubsystem();
 	public static final ArmSubsystem arm = new ArmSubsystem();
+	public static final ControllerSubsystem control = new ControllerSubsystem();
+	
 	public static OI oi;
 	public static Preferences prefs = Preferences.getInstance();
 
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	SendableChooser<Command> autonChooser = new SendableChooser<Command>();
+	
+	SendableChooser<Command> controlChooser = new SendableChooser<Command>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -49,8 +55,10 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		chooser.addObject("Left DS No Shoot", new AutoLeftGroup(false));
-		SmartDashboard.putData("Auto mode", chooser);
+		controlChooser.addObject("Duak Flight Sticks", new SwapDriveComand("STICKS"));
+		controlChooser.addDefault("Controller", new SwapDriveComand("CONTROLLER"));
+		SmartDashboard.putData("Controll Scheme", controlChooser);
+		
 		sensors.resetEncoders();
 		 new Thread(() -> {
              UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -117,7 +125,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
+		autonomousCommand = autonChooser.getSelected();
 		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",

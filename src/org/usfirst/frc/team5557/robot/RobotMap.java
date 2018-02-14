@@ -34,6 +34,7 @@ public class RobotMap {
 		public static int EMERGENCY_STOP_BUTTON = 10;
 		public static int CAMERA_SWITCH = 11;
 		public static final int RAISE_ARM_BUTTON = 1;
+		public static final int SWAP_CONTROLLER_BUTTON = 11;
 			
 		// Motor controllers are mapped here
 		public static final int LEFT_REAR_MOTOR = 4;

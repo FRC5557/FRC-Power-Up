@@ -1,36 +1,34 @@
 package org.usfirst.frc.team5557.robot.commands;
 
+import org.usfirst.frc.team5557.robot.OI;
 import org.usfirst.frc.team5557.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SwapDriveComand extends Command {
 
-	private static int layout = -1;
-	private int eee = 0;
-	public SwapDriveComand(){
+	int layoutInt;
+	int eee=0;
+	
+	public SwapDriveComand(String layout){
 		super("SwapDrive");
-		requires(Robot.drive);
+		switch(layout) {
+		case "STICKS":
+			layoutInt = 0;
+			break;
+		case "CONTROLLER":
+			layoutInt = 1;
+		}
+		System.out.println(layout + "fired");
 	}
 	
 	public void initialize(){
-		System.out.println("Swap Pressed");
-		switch(layout*-1){
-			case 1:
-				System.out.println("Swapping to Single Stick Drive");
-				break;
-			case -1:
-				System.out.println("Swapping to Two Stick Drive");
-				break;
-		}
-		layout *= -1;
-		System.out.println(layout);
+	
 	}
 	
 	public void execute() {
-		System.out.println("execute has" + layout);
-		Robot.drive.drive(layout);
-		eee =1;
+		Robot.control.setLayoutInt(layoutInt);
+		eee = 1;
 	}
 	
 	@Override

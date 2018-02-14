@@ -27,6 +27,7 @@ public class DriveSubSystem extends Subsystem{
 	DifferentialDrive difDrive = new DifferentialDrive(leftGroup, rightGroup);
 	
 	public double left, right;
+	int layoutInt;
 
 	public DriveSubSystem() {
 		
@@ -63,30 +64,31 @@ public class DriveSubSystem extends Subsystem{
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new ManualDriveCommand());
-		OI.driveStickZero.setXChannel(0);
-		OI.driveStickZero.setTwistChannel(3);
-		OI.driveStickZero.setThrottleChannel(4);
+		Robot.control.setController(0);
 	}
 	
-	public void drive(int layout) {
-		double X1 = OI.driveStickZero.getX();
-		double Y1 = -OI.driveStickZero.getY();
-		double Z1 = -OI.driveStickZero.getZ();
-		double triggerThrottle = getGameCubeTrotle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
-		
-		difDrive.arcadeDrive(triggerThrottle,X1);
-		
-	}
-	
-	public double getGameCubeTrotle(double leftT, double rightT){
-		double fThrottle = 0;
-		if(rightT > -.74){ //forward input will always take priority over reverse input
-			fThrottle = (rightT*(1/1.6)+.47);
-		}else if(leftT > -.74){
-			fThrottle = -(leftT*(1/1.6)+.47);
+	public void drive() {
+		//checkLayout();
+		layoutInt = Robot.control.getLayoutInt();
+		double turn = 0;
+		double throttle = 0;
+		System.out.println(layoutInt);
+		switch(layoutInt){
+			case 0:
+				//Flight Sticks Drive
+				turn = OI.driveStickZero.getTwist();
+				throttle = -OI.driveStickZero.getY();
+				break;
+			case 1:
+				//Controller Drive
+				turn = OI.driveStickZero.getX();
+				throttle = Robot.control.getTrigerThrottle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
+				break;
+				
 		}
-		return fThrottle;
+		difDrive.arcadeDrive(throttle,turn);
 	}
+	
 	
 	public void computerDrive(double leftSpeed, double rightSpeed) {
 		left = leftSpeed;
