@@ -77,7 +77,7 @@ public class SensorSubsystem extends Subsystem {
  
 	public double getDis(MotorType m) {
 		int encoder = Robot.drive.getTalonSensorC(m).getQuadraturePosition();
-		return (encoder/4000)*RobotMap.WHEEL_CIRC;
+		return (encoder/4096)*RobotMap.WHEEL_CIRC;
 	}
 
 	public double getSpeed(MotorType m) {

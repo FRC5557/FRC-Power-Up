@@ -72,7 +72,6 @@ public class DriveSubSystem extends Subsystem{
 		layoutInt = Robot.control.getLayoutInt();
 		double turn = 0;
 		double throttle = 0;
-		System.out.println(layoutInt);
 		switch(layoutInt){
 			case 0:
 				//Flight Sticks Drive

@@ -7,11 +7,20 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class SwapDriveComand extends Command {
 
+	String layout;
 	int layoutInt;
 	int eee=0;
 	
 	public SwapDriveComand(String layout){
 		super("SwapDrive");
+		this.layout = layout;
+	}
+	
+	public void initialize(){
+	
+	}
+	
+	public void execute() {
 		switch(layout) {
 		case "STICKS":
 			layoutInt = 0;
@@ -20,14 +29,9 @@ public class SwapDriveComand extends Command {
 			layoutInt = 1;
 		}
 		System.out.println(layout + "fired");
-	}
-	
-	public void initialize(){
-	
-	}
-	
-	public void execute() {
+		
 		Robot.control.setLayoutInt(layoutInt);
+		Robot.control.setController(layoutInt);
 		eee = 1;
 	}
 	

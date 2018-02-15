@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class ControllerSubsystem extends Subsystem{
 
 	int layoutInt;
+	double[] restingTriggerVals = new double[2];
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
@@ -22,18 +23,20 @@ public class ControllerSubsystem extends Subsystem{
 				OI.driveStickZero.setYChannel(1);
 				break;
 			case 1: //Controller
+				System.out.println("Gamepad");
 				OI.driveStickZero.setXChannel(0);
 				OI.driveStickZero.setTwistChannel(3);
 				OI.driveStickZero.setThrottleChannel(4);
+				restingTriggerVals = triggerCalibrate();
 				break;
 		}
 	}
 	
 	public double getTrigerThrottle(double leftT, double rightT){
 		double fThrottle = 0;
-		if(rightT > -.73){ //forward input will always take priority over reverse input
+		if(rightT > restingTriggerVals[0]+.03){ //forward input will always take priority over reverse input
 			fThrottle = (rightT*(1/1.6)+.47);
-		}else if(leftT > -.74){
+		}else if(leftT > restingTriggerVals[1]+.0){
 			fThrottle = -(leftT*(1/1.6)+.55); //backward has slightly higher offset because motors are slower backwards
 		}
 		return fThrottle;
@@ -47,4 +50,12 @@ public class ControllerSubsystem extends Subsystem{
 		layoutInt = l;
 	}
 	
+	public double[] triggerCalibrate(){
+		double [] callVal = new double[2];
+		callVal[0] = OI.driveStickZero.getTwist(); //left trigger
+		callVal[1] = OI.driveStickZero.getThrottle(); //right trigger
+		System.out.println("Left Trigger: " + callVal[0]);
+		System.out.println("Right Trigger: " + callVal[1]);
+		return callVal;
+	}
 }

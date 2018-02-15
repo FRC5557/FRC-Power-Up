@@ -42,6 +42,7 @@ public class Robot extends IterativeRobot {
 	public static Preferences prefs = Preferences.getInstance();
 
 	Command autonomousCommand;
+	
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 	
 	SendableChooser<Command> controlChooser = new SendableChooser<Command>();
@@ -53,11 +54,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
+
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		controlChooser.addObject("Duak Flight Sticks", new SwapDriveComand("STICKS"));
-		controlChooser.addDefault("Controller", new SwapDriveComand("CONTROLLER"));
-		SmartDashboard.putData("Controll Scheme", controlChooser);
+		
+		//buttons
+		SmartDashboard.putData("Flight Sticks: ", new SwapDriveComand("STICKS"));
+		SmartDashboard.putData("Game Pad: ", new SwapDriveComand("CONTROLLER"));
 		
 		sensors.resetEncoders();
 		 new Thread(() -> {
