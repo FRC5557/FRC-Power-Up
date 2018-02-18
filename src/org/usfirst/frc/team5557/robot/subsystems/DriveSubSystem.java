@@ -33,13 +33,13 @@ public class DriveSubSystem extends Subsystem{
 		
 		// Set up Talon SRX controllers
 
-		/*for (MotorType m : MotorType.values()) {
+		for (MotorType m : MotorType.values()) {
 			//calls config on the CANTalon object getTalon returns
 			getTalon(m).configNominalOutputForward(+RobotMap.NOMINAL_OUTPUT_VOLTAGE, 0); 
 			getTalon(m).configNominalOutputReverse(-RobotMap.NOMINAL_OUTPUT_VOLTAGE, 0);
 			getTalon(m).configPeakOutputForward(+RobotMap.PEAK_OUTPUT_VOLTAGE, 0);
 			getTalon(m).configPeakOutputReverse(-RobotMap.PEAK_OUTPUT_VOLTAGE, 0);
-		}*/
+		}
 
 		// This suppresses the "Output not frequent enough" message
 		difDrive.setSafetyEnabled(false);
@@ -80,7 +80,7 @@ public class DriveSubSystem extends Subsystem{
 				break;
 			case 1:
 				//Controller Drive
-				turn = OI.driveStickZero.getX();
+				turn = OI.driveStickZero.getX() > 0 ? OI.driveStickZero.getX()*1.5 : OI.driveStickOne.getX()*1.2;
 				throttle = Robot.control.getTrigerThrottle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
 				break;
 				

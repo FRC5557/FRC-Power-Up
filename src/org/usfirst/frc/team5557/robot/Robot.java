@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -46,6 +47,7 @@ public class Robot extends IterativeRobot {
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 	
 	SendableChooser<Command> controlChooser = new SendableChooser<Command>();
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -66,7 +68,7 @@ public class Robot extends IterativeRobot {
 		 new Thread(() -> {
              UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
              camera.setResolution(640, 480);
-             camera.setExposureManual(100);
+             camera.setExposureAuto();
              
              CvSink cvSink = CameraServer.getInstance().getVideo();
              CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
@@ -181,6 +183,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		arm.raise(-1*(OI.driveStickZero.getZ())+.10);
 	}
 
 	/**

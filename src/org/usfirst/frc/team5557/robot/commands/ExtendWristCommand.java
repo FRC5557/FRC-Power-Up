@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ExtendArmCommand extends Command{
+public class ExtendWristCommand extends Command{
 
 	
 	@Override
@@ -19,6 +19,7 @@ public class ExtendArmCommand extends Command{
 	@Override
 	protected void execute() {
 		Robot.arm.extend();
+		
 		
 	} 
 	

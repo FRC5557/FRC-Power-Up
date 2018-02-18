@@ -26,15 +26,13 @@ public class RobotMap {
 	// Driver input devices are mapped here
 		public static int JOYSTICK_DRIVE_ONE = 0;
 		public static int JOYSTICK_DRIVE_TWO = 1;
-		public static int AUTOMATIC_GEAR_PLACEMENT_BUTTON = 10;
-		public static int SHOOTER_BUTTON = 1;
-		public static int CLIMBER_BUTTON = 7;
-		public static int COLLECTOR_BUTTON = 9;
-		public static int REVERSE_CLIMBER_BUTTON = 8;
 		public static int EMERGENCY_STOP_BUTTON = 10;
 		public static int CAMERA_SWITCH = 11;
-		public static final int RAISE_ARM_BUTTON = 1;
-		public static final int SWAP_CONTROLLER_BUTTON = 11;
+		public static final int EXTEND_WRIST_BUTTON = 2; //A
+		public static final int RETRACT_WRIST_BUTTON = 3; //B
+		public static final int INTAKE_BUTTON = 8; //Z
+		public static final int EXPELL_BUTTON = 1; //X
+		public static final int SWAP_CONTROLLER_BUTTON = 11; //start
 			
 		// Motor controllers are mapped here
 		public static final int LEFT_REAR_MOTOR = 4;
@@ -46,9 +44,9 @@ public class RobotMap {
 		public static final int LOWER_ARM_MOTOR_LEFT = 6;
 		public static final int LOWER_ARM_MOTOR_RIGHT = 5;
 		public static final int WRIST_MOTOR_LEFT = 7;
-		public static final int WRIST_MOTOR_RIGHT = 8;
-		public static final int COLLECTOR_MOTOR_LEFT = 9;
-		public static final int COLLECTOR_MOTOR_RIGHT = 10;
+		public static final int WRIST_MOTOR_RIGHT = 10;
+		public static final int INTAKE_MOTOR_LEFT = 8;
+		public static final int INTAKE_MOTOR_RIGHT = 9;
 		
 		// Constants for encoders connected to Talon SRX
 		public static final float PEAK_OUTPUT_VOLTAGE = 10f;

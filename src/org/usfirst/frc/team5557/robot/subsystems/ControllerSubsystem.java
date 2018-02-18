@@ -27,6 +27,7 @@ public class ControllerSubsystem extends Subsystem{
 				OI.driveStickZero.setXChannel(0);
 				OI.driveStickZero.setTwistChannel(3);
 				OI.driveStickZero.setThrottleChannel(4);
+				OI.driveStickZero.setZChannel(2);
 				restingTriggerVals = triggerCalibrate();
 				break;
 		}

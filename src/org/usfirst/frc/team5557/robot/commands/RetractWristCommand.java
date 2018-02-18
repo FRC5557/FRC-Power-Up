@@ -4,7 +4,7 @@ import org.usfirst.frc.team5557.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class RaiseArmCommand extends Command{
+public class RetractWristCommand extends Command {
 
 	@Override
 	protected void initialize() {
@@ -13,13 +13,14 @@ public class RaiseArmCommand extends Command{
 
 	@Override
 	protected void execute() {
-		Robot.arm.raise(1);
+		Robot.arm.retract();
 		
+	
 	} 
 	
 	@Override
 	protected boolean isFinished() {
-		return false;// Robot.arm.getLimSwitchStatus(0);
+		return false;
 	}
 	
 	@Override
