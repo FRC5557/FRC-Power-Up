@@ -40,7 +40,6 @@ public class ArmSubsystem extends Subsystem{
 	}
 
 	public void raise(double speed){
-		System.out.println("raise");
 		//double speed = Robot.prefs.getDouble("ArmUpVoltage", 0);
 		//double speed = OI.driveStickZero.getZ();
 		lower.set(speed);
@@ -66,12 +65,12 @@ public class ArmSubsystem extends Subsystem{
 	
 	public void expell(){
 		double speed = Robot.prefs.getDouble("IntakeUpVoltage", 0);
-		intake.set(-1);
+		intake.set(1);
 	}
 	
 	public void intake(){
 		double speed = Robot.prefs.getDouble("IntakeUpVoltage", 0);
-		intake.set(1);
+		intake.set(.3);
 	}
 
 	public boolean getLimSwitchStatus(int switchNumber){

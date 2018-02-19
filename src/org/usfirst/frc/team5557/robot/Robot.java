@@ -19,11 +19,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
-import org.usfirst.frc.team5557.robot.commands.autogroups.AutoLeftGroup;
+import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleAutoLine;
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLine;
 import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
 import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
+
+import utils.ADIS16448_IMU;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,6 +50,8 @@ public class Robot extends IterativeRobot {
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 	
 	SendableChooser<Command> controlChooser = new SendableChooser<Command>();
+	
+	  public static final ADIS16448_IMU imu = new ADIS16448_IMU();
 	
 
 	/**
@@ -93,11 +98,27 @@ public class Robot extends IterativeRobot {
 		super.robotPeriodic();
 		SmartDashboard.putNumber("Ultra (mm): ", sensors.getUltraWithVoltage());
 		SmartDashboard.putNumber("Encoder Right (cm): ", sensors.getDis(MotorType.kFrontRight));
-		SmartDashboard.putNumber("Encoder Left (cm): ", sensors.getDis(MotorType.kRearLeft));
+		SmartDashboard.putNumber("Encoder Left (cm): ", sensors.getDis(MotorType.kFrontLeft));
 		SmartDashboard.putNumber("Left Stick", OI.driveStickZero.getY());
 		SmartDashboard.putNumber("Right Stick", OI.driveStickOne.getY());
 		SmartDashboard.putNumber("left encoder ticks: ", drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition());
 		prefs.getDouble("ArmUpVoltage", 0);
+		
+		
+	    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
+	    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
+	    SmartDashboard.putNumber("Gyro-Z", imu.getAngleZ());
+	    
+	    SmartDashboard.putNumber("Accel-X", imu.getAccelX());
+	    SmartDashboard.putNumber("Accel-Y", imu.getAccelY());
+	    SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
+	    
+	    SmartDashboard.putNumber("Pitch", imu.getPitch());
+	    SmartDashboard.putNumber("Roll", imu.getRoll());
+	    SmartDashboard.putNumber("Yaw", imu.getYaw());
+	    
+	    SmartDashboard.putNumber("Pressure: ", imu.getBarometricPressure());
+	    SmartDashboard.putNumber("Temperature: ", imu.getTemperature()); 
 		
 		
 	}
@@ -130,7 +151,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = autonChooser.getSelected();
+		autonomousCommand = new MiddleAutoLine();//autonChooser.getSelected();
 		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -141,20 +162,20 @@ public class Robot extends IterativeRobot {
 		
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
+			System.out.println("aa");
 			autonomousCommand.start();
 		
-		String gameData;
+		/*String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData.charAt(0) == 'R')
 		{
-			new AutoLeftGroup(false).start();
-			//Robot.drive.computerDrive(.5, 0);
+			new RightAutoLine().start();
 		} else {
 			//Put left auto code here
 			
 			
 			
-		}
+		}*/
 		
 		
 	}
@@ -183,7 +204,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		arm.raise(-1*(OI.driveStickZero.getZ())+.10);
+		if(!(arm.getLimSwitchStatus(0))){
+			System.out.println("Raising: " + OI.driveStickZero.getZ()+.10);
+			arm.raise(-1*(OI.driveStickZero.getZ())+.10);
+		}
 	}
 
 	/**

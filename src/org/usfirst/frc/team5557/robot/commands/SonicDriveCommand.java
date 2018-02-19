@@ -25,7 +25,7 @@ public class SonicDriveCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drive.computerDrive(speed, 0);
+		Robot.drive.computerDrive(.5,0);
 	}
 
 	@Override

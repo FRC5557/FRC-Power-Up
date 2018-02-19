@@ -19,7 +19,12 @@ public class RaiseArmCommand extends Command{
 	
 	@Override
 	protected boolean isFinished() {
-		return false;// Robot.arm.getLimSwitchStatus(0);
+		if( Robot.arm.getLimSwitchStatus(0)){
+			System.out.println("Lim Switch triggered");
+			return true;
+		}
+		
+		return false;
 	}
 	
 	@Override

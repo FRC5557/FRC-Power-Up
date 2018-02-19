@@ -28,12 +28,12 @@ public class DriveForDistanceCommand extends Command {
 	@Override
 	protected void execute() {
 		//TODO Balance motors using PID instead of manual motor speeds
-		Robot.drive.computerDrive(.5, .48); 
+		Robot.drive.computerDrive(.5, 0); 
 	}
 
 	@Override
 	protected boolean isFinished() {
-		if (Math.abs(Robot.sensors.getDis(MotorType.kRearLeft)) <= distance) {
+		if (Math.abs(Robot.sensors.getDis(MotorType.kFrontRight)) <= distance) {
 			return false;
 		} else {
 			System.out.println("DriveForDistance isFinished");

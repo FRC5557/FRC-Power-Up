@@ -89,10 +89,8 @@ public class DriveSubSystem extends Subsystem{
 	}
 	
 	
-	public void computerDrive(double leftSpeed, double rightSpeed) {
-		left = leftSpeed;
-		right = rightSpeed;
-		difDrive.tankDrive(leftSpeed, rightSpeed);
+	public void computerDrive(double speed, double rotate) {
+		difDrive.arcadeDrive(speed, rotate);
 	}
 
     public void stop() {

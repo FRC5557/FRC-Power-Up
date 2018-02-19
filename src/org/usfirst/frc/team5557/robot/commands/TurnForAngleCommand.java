@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 //Basic autonomous turning using Encoders
 //
 public class TurnForAngleCommand extends Command {
-	private double angle;
+	private double angleInTicks;
 
 	public TurnForAngleCommand(double angle) {
 		requires(Robot.drive);
-		this.angle = angle;
+		angleInTicks = ((((61*3.14159265)/360)*angle)/95.76)*4096;
 	}
 
 	
@@ -31,7 +31,11 @@ public class TurnForAngleCommand extends Command {
 	 
 	@Override
 	protected void execute() {
-		Robot.drive.computerDrive(0,.3*(angle/Math.abs(angle)));
+		if (angleInTicks > 0){
+		Robot.drive.computerDrive(0,.6);
+		} else {
+		Robot.drive.computerDrive(0, -.6);	
+		}
 	}
 
 	 /*Needs to be updated Checks if distance is greater than wheel
@@ -40,11 +44,20 @@ public class TurnForAngleCommand extends Command {
 	 
 	@Override
 	protected boolean isFinished() {
-		if (Robot.sensors.getDis(MotorType.kFrontLeft) >= ((Math.abs(angle) / 360) * (8 * Math.PI))) {
-			return true;
-		}
-		return false;
-	}
+		System.out.println(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() + ", " + angleInTicks);
+		if (angleInTicks < 0){
+			if (1*(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition()) <= -angleInTicks) {
+			return true;}
+			else { return false; }
+		}else {
+			if (-1*(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition()) >= angleInTicks) {
+				return true;
+			} else {
+			return false;}}}
+		//	}
+		//}
+		
+	
 
 	@Override
 	protected void end() {

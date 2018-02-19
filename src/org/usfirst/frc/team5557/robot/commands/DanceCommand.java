@@ -29,7 +29,7 @@ public class DanceCommand extends Command {
 	protected void execute() {
 
 		System.out.println("dance" + speed + " " + initial + " " + time);
-		Robot.drive.computerDrive(0, speed);
+		Robot.drive.computerDrive(0,speed);
 	}
 
 	@Override
