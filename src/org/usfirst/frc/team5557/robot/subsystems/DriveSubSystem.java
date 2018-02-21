@@ -85,7 +85,7 @@ public class DriveSubSystem extends Subsystem{
 				break;
 				
 		}
-		difDrive.arcadeDrive(throttle,turn);
+		difDrive.arcadeDrive(throttle,turn*.95);
 	}
 	
 	

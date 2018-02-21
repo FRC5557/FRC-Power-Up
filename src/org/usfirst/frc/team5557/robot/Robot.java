@@ -62,8 +62,8 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		oi = new OI();
 
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		autonChooser.addDefault("Default Auto", new RightAutoLine());
+		autonChooser.addObject("My Auto", new MiddleAutoLine());
 		
 		//buttons
 		SmartDashboard.putData("Flight Sticks: ", new SwapDriveComand("STICKS"));
@@ -151,31 +151,21 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = new MiddleAutoLine();//autonChooser.getSelected();
+		autonomousCommand = autonChooser.getSelected();
 		
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-		
-		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			System.out.println("aa");
-			autonomousCommand.start();
-		
-		/*String gameData;
+		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData.charAt(0) == 'R')
 		{
-			new RightAutoLine().start();
+			if(autonomousCommand != null){
+				autonomousCommand.start();
+			}
 		} else {
 			//Put left auto code here
 			
 			
 			
-		}*/
+		}
 		
 		
 	}
@@ -205,7 +195,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		if(!(arm.getLimSwitchStatus(0))){
-			System.out.println("Raising: " + OI.driveStickZero.getZ()+.10);
+			//System.out.println("Raising: " + OI.driveStickZero.getZ()+.10);
 			arm.raise(-1*(OI.driveStickZero.getZ())+.10);
 		}
 	}
