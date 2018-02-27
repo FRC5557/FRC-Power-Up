@@ -1,7 +1,7 @@
 package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
-
+import org.usfirst.frc.team5557.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
@@ -14,7 +14,7 @@ public class TurnForAngleCommand extends Command {
 
 	public TurnForAngleCommand(double angle) {
 		requires(Robot.drive);
-		angleInTicks = ((((61*3.14159265)/360)*angle)/95.76)*4096;
+		angleInTicks = ((((RobotMap.ROBOT_DIAMETER*Math.PI)/360)*angle)/RobotMap.WHEEL_CIRC)*4096;
 	}
 
 	
@@ -46,16 +46,23 @@ public class TurnForAngleCommand extends Command {
 	protected boolean isFinished() {
 		System.out.println(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() + ", " + angleInTicks);
 		if (angleInTicks < 0){
-			if (1*(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition()) <= -angleInTicks) {
-			return true;}
-			else { return false; }
-		}else {
-			if (-1*(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition()) >= angleInTicks) {
+			if(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= 3000){
+				System.out.println("Ebin :DDDD");
 				return true;
-			} else {
-			return false;}}}
-		//	}
-		//}
+			}
+			/*if (1*(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition()) <= -angleInTicks) {
+				return true;
+			}
+			else{ 
+				return false;
+			}*/
+		}else {
+			if (Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() <= -3000) {
+				return true;
+			}
+		}
+		return false;
+	}
 		
 	
 

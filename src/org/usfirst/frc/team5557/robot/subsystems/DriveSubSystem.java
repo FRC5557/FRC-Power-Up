@@ -4,6 +4,7 @@ import org.usfirst.frc.team5557.robot.Robot;
 import org.usfirst.frc.team5557.robot.RobotMap;
 import org.usfirst.frc.team5557.robot.commands.ManualDriveCommand;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -80,12 +81,12 @@ public class DriveSubSystem extends Subsystem{
 				break;
 			case 1:
 				//Controller Drive
-				turn = OI.driveStickZero.getX() > 0 ? OI.driveStickZero.getX()*1.5 : OI.driveStickOne.getX()*1.2;
+				turn = OI.driveStickZero.getX() > 0 ? OI.driveStickZero.getX()*1 : OI.driveStickOne.getX()*1;
 				throttle = Robot.control.getTrigerThrottle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
 				break;
 				
 		}
-		difDrive.arcadeDrive(throttle,turn*.95);
+		difDrive.arcadeDrive(throttle,turn);
 	}
 	
 	
@@ -114,6 +115,14 @@ public class DriveSubSystem extends Subsystem{
 			return leftFrontTal;
 		}
 
+	}
+	
+	public void autonTalonInit(NeutralMode mode){
+		for (MotorType m : MotorType.values()) {
+			//calls config on the CANTalon object getTalon returns
+			getTalon(m).setNeutralMode(mode);
+			getTalonSensorC(m).setQuadraturePosition(0, 500);
+		}
 	}
 
 

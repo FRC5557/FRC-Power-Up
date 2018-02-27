@@ -35,8 +35,8 @@ public class RobotMap {
 		public static final int SWAP_CONTROLLER_BUTTON = 11; //start
 			
 		// Motor controllers are mapped here
-		public static final int LEFT_REAR_MOTOR = 4;
-		public static final int LEFT_FRONT_MOTOR = 3; //Encoder on this one
+		public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one
+		public static final int LEFT_FRONT_MOTOR = 3; 
 		public static final int RIGHT_FRONT_MOTOR = 2;//Encoder on this one
 		public static final int RIGHT_REAR_MOTOR = 1; 
 		
@@ -62,7 +62,8 @@ public class RobotMap {
 		public static final double INTEGRAL_ZONE = 0;
 		public static final double WHEEL_SIZE = 15.24; //wheel size in cm
 		public static final double WHEEL_CIRC = 95.76; //wheel circumference in cm
-		public static final int ULTRA_ANAL = 0;
+		public static final double ROBOT_DIAMETER = 61; //Robot Diameter in cm
+		public static final int ULTRA_ANALOG = 0;
 		public static final float MAXBOTIX_VOLTAGE_CONSTANT_MM = 1024f;
 		
 		

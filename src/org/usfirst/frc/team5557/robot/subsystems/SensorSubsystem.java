@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Subsystem containing all sensors for the robot
  */
 public class SensorSubsystem extends Subsystem {
-	public AnalogInput ultra = new AnalogInput(RobotMap.ULTRA_ANAL);
+	public AnalogInput ultra = new AnalogInput(RobotMap.ULTRA_ANALOG);
 
 	public SensorSubsystem() {
 		//ultra.setAutomaticMode(true);

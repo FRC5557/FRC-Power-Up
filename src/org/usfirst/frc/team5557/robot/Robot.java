@@ -26,6 +26,8 @@ import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
 import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import utils.ADIS16448_IMU;
 
 /**
@@ -98,26 +100,16 @@ public class Robot extends IterativeRobot {
 		super.robotPeriodic();
 		SmartDashboard.putNumber("Ultra (mm): ", sensors.getUltraWithVoltage());
 		SmartDashboard.putNumber("Encoder Right (cm): ", sensors.getDis(MotorType.kFrontRight));
-		SmartDashboard.putNumber("Encoder Left (cm): ", sensors.getDis(MotorType.kFrontLeft));
+		SmartDashboard.putNumber("Encoder Left (cm): ", sensors.getDis(MotorType.kRearLeft));
 		SmartDashboard.putNumber("Left Stick", OI.driveStickZero.getY());
 		SmartDashboard.putNumber("Right Stick", OI.driveStickOne.getY());
-		SmartDashboard.putNumber("left encoder ticks: ", drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition());
+		SmartDashboard.putNumber("Left encoder ticks: ", drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition());
+		SmartDashboard.putNumber("Right encoder ticks: ", drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition());
 		prefs.getDouble("ArmUpVoltage", 0);
 		
 		
 	    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
-	    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
-	    SmartDashboard.putNumber("Gyro-Z", imu.getAngleZ());
 	    
-	    SmartDashboard.putNumber("Accel-X", imu.getAccelX());
-	    SmartDashboard.putNumber("Accel-Y", imu.getAccelY());
-	    SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
-	    
-	    SmartDashboard.putNumber("Pitch", imu.getPitch());
-	    SmartDashboard.putNumber("Roll", imu.getRoll());
-	    SmartDashboard.putNumber("Yaw", imu.getYaw());
-	    
-	    SmartDashboard.putNumber("Pressure: ", imu.getBarometricPressure());
 	    SmartDashboard.putNumber("Temperature: ", imu.getTemperature()); 
 		
 		
@@ -152,19 +144,18 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		autonomousCommand = autonChooser.getSelected();
-		
+		drive.autonTalonInit(NeutralMode.Brake);
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData.charAt(0) == 'R')
 		{
-			if(autonomousCommand != null){
-				autonomousCommand.start();
-			}
+			autonomousCommand = new RightAutoLine();
 		} else {
-			//Put left auto code here
+			autonomousCommand = new MiddleAutoLine();
 			
-			
-			
+		}
+		if(autonomousCommand != null){
+			autonomousCommand.start();
 		}
 		
 		
@@ -184,6 +175,7 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		drive.autonTalonInit(NeutralMode.Coast);
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}
