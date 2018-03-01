@@ -65,12 +65,12 @@ public class ArmSubsystem extends Subsystem{
 	
 	public void expell(){
 		double speed = Robot.prefs.getDouble("IntakeUpVoltage", 0);
-		intake.set(1);
+		intake.set(-.3);
 	}
 	
 	public void intake(){
 		double speed = Robot.prefs.getDouble("IntakeUpVoltage", 0);
-		intake.set(.3);
+		intake.set(.2);
 	}
 
 	public boolean getLimSwitchStatus(int switchNumber){

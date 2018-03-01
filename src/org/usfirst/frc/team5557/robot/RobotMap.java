@@ -30,14 +30,14 @@ public class RobotMap {
 		public static int CAMERA_SWITCH = 11;
 		public static final int EXTEND_WRIST_BUTTON = 2; //A
 		public static final int RETRACT_WRIST_BUTTON = 3; //B
-		public static final int INTAKE_BUTTON = 8; //Z
-		public static final int EXPELL_BUTTON = 1; //X
-		public static final int SWAP_CONTROLLER_BUTTON = 11; //start
+		public static final int INTAKE_BUTTON = 6; //R1
+		public static final int EXPELL_BUTTON = 5; //R2
+		public static final int SWAP_CONTROLLER_BUTTON = 10; //start
 			
 		// Motor controllers are mapped here
-		public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one
+		public static final int LEFT_REAR_MOTOR = 4; //Encoder on this one, counts down when driving forward
 		public static final int LEFT_FRONT_MOTOR = 3; 
-		public static final int RIGHT_FRONT_MOTOR = 2;//Encoder on this one
+		public static final int RIGHT_FRONT_MOTOR = 2;//Encoder on this one, counts up when driving forward
 		public static final int RIGHT_REAR_MOTOR = 1; 
 		
 		//Arm motors
@@ -60,11 +60,43 @@ public class RobotMap {
 		public static final double PID_DERIVATIVE = 0;
 		public static final double CLOSED_LOOP_RAMP_RATE = 0;
 		public static final double INTEGRAL_ZONE = 0;
+		public static final double TICKS_PER_ROTATION = 4096;
 		public static final double WHEEL_SIZE = 15.24; //wheel size in cm
 		public static final double WHEEL_CIRC = 95.76; //wheel circumference in cm
 		public static final double ROBOT_DIAMETER = 61; //Robot Diameter in cm
+		/**
+		 * Which PID slot to pull gains from. Starting 2018, you can choose from
+		 * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
+		 * configuration.
+		 */
+		public static final int kSlotIdx = 0;
+		/**
+		 * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For
+		 * now we just want the primary one.
+		 */
+		public static final int kPIDLoopIdx = 0;
+		/**
+		 * set to zero to skip waiting for confirmation, set to nonzero to wait and
+		 * report to DS if action fails.
+		 */
+		public static final int kTimeoutMs = 10;
+		/**
+		 * Base trajectory period to add to each individual trajectory point's
+		 * unique duration. This can be set to any value within [0,255]ms.
+		 */
+		public static final int kBaseTrajPeriodMs = 0;
+		/**
+		 * Motor deadband, set to 1%.
+		 */
+		public static final double kNeutralDeadband = 0.01;
+		
+		//Ultrasonic
 		public static final int ULTRA_ANALOG = 0;
 		public static final float MAXBOTIX_VOLTAGE_CONSTANT_MM = 1024f;
+		
+		//Limit Switches
+		public static final int INTAKE_LIMIT_SWITCH = 0;
+		public static final int ARM_FULL_HEIGHT_SWITCH = 1;
 		
 		
 

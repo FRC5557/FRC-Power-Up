@@ -120,8 +120,8 @@ public class DriveSubSystem extends Subsystem{
 	public void autonTalonInit(NeutralMode mode){
 		for (MotorType m : MotorType.values()) {
 			//calls config on the CANTalon object getTalon returns
+			getTalonSensorC(m).setQuadraturePosition(0, 1);
 			getTalon(m).setNeutralMode(mode);
-			getTalonSensorC(m).setQuadraturePosition(0, 500);
 		}
 	}
 

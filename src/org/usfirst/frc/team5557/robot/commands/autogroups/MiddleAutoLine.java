@@ -10,7 +10,7 @@ public class MiddleAutoLine extends CommandGroup {
 	
 	public MiddleAutoLine(){
 		;// Drive forward for 10 ft
-		addSequential(new TurnForAngleCommand(90)); 
+		addSequential(new TurnForAngleCommand(90));     
 		addSequential(new DriveForDistanceCommand(198.12));
 		addSequential(new TurnForAngleCommand(-90));
 		addSequential(new DriveForDistanceCommand(304.8 + 152.4));

@@ -53,7 +53,7 @@ public class SensorSubsystem extends Subsystem {
 
 	public void resetEncoders() {
 		for (MotorType m : MotorType.values()) {
-			Robot.drive.getTalonSensorC(m).setQuadraturePosition(0, 1000);
+			Robot.drive.getTalonSensorC(m).setQuadraturePosition(0, 50);
 		}
 	}
 
