@@ -25,7 +25,7 @@ public class RetractWristCommand extends Command {
 	
 	@Override
 	protected void end() {
-		Robot.arm.stop();
+		Robot.arm.wristPower = -.1;
 	}
 
 }

@@ -26,7 +26,7 @@ import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLine;
 import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
-import org.usfirst.frc.team5557.robot.subsystems.MotionProfileExample;
+import org.usfirst.frc.team5557.robot.subsystems.MotionProfileSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
 
 import com.ctre.phoenix.motion.SetValueMotionProfile;
@@ -56,8 +56,8 @@ public class Robot extends IterativeRobot {
 	TalonSRX _talon2 = new TalonSRX(RobotMap.LEFT_REAR_MOTOR);
 	
 	/** some example logic on how one can manage an MP */
-	MotionProfileExample _example = new MotionProfileExample(_talon, GeneratedMotionProfile.motionProfilePointsRight, GeneratedMotionProfile.numPointsRight);
-	MotionProfileExample _exampleButTheOtherOne = new MotionProfileExample(_talon2, GeneratedMotionProfile.motionProfilePointsLeft, GeneratedMotionProfile.numPointsLeft);
+	MotionProfileSubsystem _example = new MotionProfileSubsystem(_talon, GeneratedMotionProfile.motionProfilePointsRight, GeneratedMotionProfile.numPointsRight);
+	MotionProfileSubsystem _exampleButTheOtherOne = new MotionProfileSubsystem(_talon2, GeneratedMotionProfile.motionProfilePointsLeft, GeneratedMotionProfile.numPointsLeft);
 
 	
 	public static OI oi;
@@ -273,6 +273,7 @@ public class Robot extends IterativeRobot {
 			//System.out.println("Raising: " + OI.driveStickZero.getZ()+.10);
 			arm.raise(-1*(OI.driveStickZero.getZ())+.10);
 		}
+		arm.wrist.set(arm.wristPower);
 	}
 
 	/**

@@ -32,16 +32,21 @@ public class OI {
 	//public final Button raiseArmButton = new JoystickButton(driveStickZero, RobotMap.RAISE_ARM_BUTTON);
 	public final Button extendWristButton = new JoystickButton(driveStickZero, RobotMap.EXTEND_WRIST_BUTTON);
 	public final Button retractWristButton = new JoystickButton(driveStickZero, RobotMap.RETRACT_WRIST_BUTTON);
-	public final Button intakeButton = new JoystickButton(driveStickZero, RobotMap.INTAKE_BUTTON);
-	public final Button expellButton = new JoystickButton(driveStickZero, RobotMap.EXPELL_BUTTON);
+	public final Button intakeButtonLeft = new JoystickButton(driveStickZero, RobotMap.INTAKE_BUTTON_LEFT);
+	public final Button intakeButtonRight = new JoystickButton(driveStickZero, RobotMap.INTAKE_BUTTON_RIGHT);
+	public final Button expellButtonLeft = new JoystickButton(driveStickZero, RobotMap.EXPELL_BUTTON_LEFT);
+	public final Button expellButtonRight = new JoystickButton(driveStickZero, RobotMap.EXPELL_BUTTON_RIGHT);
 	public final Button swapControllerButton = new JoystickButton(driveStickZero, RobotMap.SWAP_CONTROLLER_BUTTON);
 	
 	public OI() {
 		//raiseArmButton.whileHeld(new RaiseAjrmCommand());
 		extendWristButton.whileHeld(new ExtendWristCommand());
 		retractWristButton.whileHeld(new RetractWristCommand());
-		intakeButton.whileHeld(new IntakeCommand());
-		expellButton.whileHeld(new ExpellCommand());
+		intakeButtonLeft.whileHeld(new IntakeCommand(8));
+		intakeButtonRight.whileHeld(new IntakeCommand(9));
+		expellButtonLeft.whileHeld(new ExpellCommand(8));
+		expellButtonRight.whileHeld(new ExpellCommand(9));
+		
 		//swapControllerButton.whenPressed(new SwapDriveComand("CONTROLLER"));
 	}
 

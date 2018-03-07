@@ -36,7 +36,7 @@ import org.usfirst.frc.team5557.robot.RobotMap;
 import com.ctre.phoenix.motion.*;
 import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 
-public class MotionProfileExample {
+public class MotionProfileSubsystem {
 
 	/**
 	 * The status of the motion profile executer and buffer inside the Talon.
@@ -116,7 +116,7 @@ public class MotionProfileExample {
 	 * @param points 
 	 *			  reference to 2D array containing motion profile points
 	 */
-	public MotionProfileExample(TalonSRX talon, double[][] points, int numPoints) {
+	public MotionProfileSubsystem(TalonSRX talon, double[][] points, int numPoints) {
 		_talon = talon;
 		coolPoints = points;
 		this.numPoints = numPoints;
