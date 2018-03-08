@@ -308,15 +308,19 @@ public class MotionProfileSubsystem extends Subsystem{
 			 * we never miss logging it.
 			 */
 			_talon.clearMotionProfileHasUnderrun(0);
+			_talon2.clearMotionProfileHasUnderrun(0);
 		}
 		/*
 		 * just in case we are interrupting another MP and there is still buffer
 		 * points in memory, clear it.
 		 */
 		_talon.clearMotionProfileTrajectories();
+		_talon2.clearMotionProfileTrajectories();
+		
 
 		/* set the base trajectory period to zero, use the individual trajectory period below */
 		_talon.configMotionProfileTrajectoryPeriod(RobotMap.kBaseTrajPeriodMs, RobotMap.kTimeoutMs);
+		_talon2.configMotionProfileTrajectoryPeriod(RobotMap.kBaseTrajPeriodMs, RobotMap.kTimeoutMs);
 		
 		/* This is fast since it's just into our TOP buffer */
 		for (int i = 0; i < totalCnt; ++i) {
