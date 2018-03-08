@@ -1,9 +1,7 @@
 package res;
 public class GeneratedMotionProfile {
-	public static final int numPointsRight = 138;
-	public static final int numPointsLeft = 138;
 	// Position (rotations) Velocity (RPM) Duration (ms)
-	public static double [][]motionProfilePointsRight = new double[][]{		
+	public double [][]motionProfilePointsRight = new double[][]{		
 		{0.003704, 0.148148, 50},
 		{0.014815, 0.222222, 50},
 		{0.033333, 0.370370, 50},
@@ -145,7 +143,7 @@ public class GeneratedMotionProfile {
 		{19.866779, 0.000000, 50}
 		};
 
-	public static double[][] motionProfilePointsLeft = new double[][]{
+	public double[][] motionProfilePointsLeft = new double[][]{
 		{0.003704, 0.148148, 50},
 		{0.014815, 0.222222, 50},
 		{0.033333, 0.370370, 50},
@@ -286,5 +284,8 @@ public class GeneratedMotionProfile {
 		{24.463457, 0.065269, 50},
 		{24.463457, 0.000000, 50}
 	};
+	
+	public final int numPointsRight = motionProfilePointsRight.length; //shoulf be 138
+	public final int numPointsLeft = motionProfilePointsLeft.length; //should be 138
 		
 }

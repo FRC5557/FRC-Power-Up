@@ -29,6 +29,7 @@ public class SensorSubsystem extends Subsystem {
 			Robot.drive.getTalon(m).setCloseLoopRampRate(RobotMap.CLOSED_LOOP_RAMP_RATE);
 			//Robot.drive.getTalon(m).setIzone(RobotMap.INTEGRAL_ZONE);
 		}*/
+		
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class SensorSubsystem extends Subsystem {
 
 	public void resetEncoders() {
 		for (MotorType m : MotorType.values()) {
-			Robot.drive.getTalonSensorC(m).setQuadraturePosition(0, 50);
+			Robot.drive.getTalonSensorC(m).setQuadraturePosition(0, 0);
 		}
 	}
 
