@@ -36,9 +36,9 @@ public class ControllerSubsystem extends Subsystem{
 	public double getTrigerThrottle(double leftT, double rightT){
 		double fThrottle = 0;
 		if(rightT > restingTriggerVals[0]+.1){ //forward input will always take priority over reverse input
-			fThrottle = (rightT*(1/1.6)+.47);
+			fThrottle = (rightT*(1/1.6)+.30);
 		}else if(leftT > restingTriggerVals[1]){
-			fThrottle = -(leftT*(1/1.6)+.55); //backward has slightly higher offset because motors are slower backwards
+			fThrottle = -(leftT*(1/1.6)+.45); //backward has slightly higher offset because motors are slower backwards
 		}
 		return fThrottle;
 	}

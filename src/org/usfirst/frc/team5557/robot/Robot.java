@@ -209,9 +209,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		if(!(arm.getLimSwitchStatus(RobotMap.ARM_FULL_HEIGHT_SWITCH))){
-			//System.out.println("Raising: " + OI.driveStickZero.getZ()+.10);
-			arm.raise(-1*(OI.driveStickZero.getZ())+.10);
+		if(arm.getLimSwitchStatus(RobotMap.ARM_FULL_HEIGHT_SWITCH)){
+			System.out.println("Raising: " + (OI.driveStickZero.getZ()*5)+.10);
+			arm.raise(((OI.driveStickZero.getZ())*5)+.10);
 		}
 		arm.wrist.set(arm.wristPower);
 	}
