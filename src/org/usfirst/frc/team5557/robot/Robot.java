@@ -58,13 +58,13 @@ public class Robot extends IterativeRobot {
 	
 	public static OI oi;
 	public static Preferences prefs = Preferences.getInstance();
-	
+
 	public static final ADIS16448_IMU imu = new ADIS16448_IMU();
-	 
+
 	Command autonomousCommand;
-		
+
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>();
-		
+
 	SendableChooser<Command> controlChooser = new SendableChooser<Command>();
 	
 	int aPerFlag = 0;
@@ -213,6 +213,7 @@ public class Robot extends IterativeRobot {
 			//System.out.println("Raising: " + OI.driveStickZero.getZ()+.10);
 			arm.raise(-1*(OI.driveStickZero.getZ())+.10);
 		}
+		arm.wrist.set(arm.wristPower);
 	}
 
 	/**

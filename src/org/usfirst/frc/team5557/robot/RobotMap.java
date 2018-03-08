@@ -28,10 +28,12 @@ public class RobotMap {
 		public static int JOYSTICK_DRIVE_TWO = 1;
 		public static int EMERGENCY_STOP_BUTTON = 10;
 		public static int CAMERA_SWITCH = 11;
-		public static final int EXTEND_WRIST_BUTTON = 2; //A
-		public static final int RETRACT_WRIST_BUTTON = 3; //B
-		public static final int INTAKE_BUTTON = 6; //R1
-		public static final int EXPELL_BUTTON = 5; //R2
+		public static final int EXTEND_WRIST_BUTTON = 6; //R1
+		public static final int RETRACT_WRIST_BUTTON = 5; //L1
+		public static final int INTAKE_BUTTON_LEFT = 1; //SQUARE
+		public static final int INTAKE_BUTTON_RIGHT = 2; //X
+		public static final int EXPELL_BUTTON_LEFT = 4; //Triangle
+		public static final int EXPELL_BUTTON_RIGHT = 3; //Circle
 		public static final int SWAP_CONTROLLER_BUTTON = 10; //start
 			
 		// Motor controllers are mapped here

@@ -43,7 +43,7 @@ import com.ctre.phoenix.motion.*;
 import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 
 public class MotionProfileSubsystem extends Subsystem{
-	
+
 	/**
 	 * The status of the motion profile executer and buffer inside the Talon.
 	 * Instead of creating a new one every time we call getMotionProfileStatus,
@@ -113,10 +113,10 @@ public class MotionProfileSubsystem extends Subsystem{
 	 * every 10ms.
 	 */
 	class PeriodicRunnable implements java.lang.Runnable {
-	    public void run() {  
+	    public void run() {
 	    	_talon.processMotionProfileBuffer();
 	    	_talon2.processMotionProfileBuffer();
-	    
+
 	    }
 	}
 	Notifier _notifer = new Notifier(new PeriodicRunnable());
@@ -316,12 +316,12 @@ public class MotionProfileSubsystem extends Subsystem{
 		 */
 		_talon.clearMotionProfileTrajectories();
 		_talon2.clearMotionProfileTrajectories();
-		
+
 
 		/* set the base trajectory period to zero, use the individual trajectory period below */
 		_talon.configMotionProfileTrajectoryPeriod(RobotMap.kBaseTrajPeriodMs, RobotMap.kTimeoutMs);
 		_talon2.configMotionProfileTrajectoryPeriod(RobotMap.kBaseTrajPeriodMs, RobotMap.kTimeoutMs);
-		
+
 		/* This is fast since it's just into our TOP buffer */
 		for (int i = 0; i < totalCnt; ++i) {
 			double positionRotRight = pointsRight[i][0];
@@ -340,7 +340,7 @@ public class MotionProfileSubsystem extends Subsystem{
 			pointRight.isLastPoint = false;
 			if ((i + 1) == totalCnt)
 				pointRight.isLastPoint = true; /* set this to true on the last point  */
-			
+
 			double positionRotLeft = pointsLeft[i][0];
 			double velocityRPMLeft = pointsLeft[i][1];
 			/* for each point, fill our structure and pass it to API */
@@ -380,14 +380,14 @@ public class MotionProfileSubsystem extends Subsystem{
 	public SetValueMotionProfile getSetValue() {
 		return _setValue;
 	}
-	
+
 	public void clearMPState() {
 		_talon.set(ControlMode.PercentOutput, 0);
 		_talon2.set(ControlMode.PercentOutput, 0);
 		/* clear our buffer and put everything into a known state */
 		reset();
 	}
-	
+
 	public void configTalonForProfile() {
 		_talon.setInverted(true);
 		_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -400,13 +400,13 @@ public class MotionProfileSubsystem extends Subsystem{
 		_talon.config_kD(0, 20.0, RobotMap.kTimeoutMs);
 
 		/* Our profile uses 10ms timing */
-		_talon.configMotionProfileTrajectoryPeriod(10, RobotMap.kTimeoutMs); 
+		_talon.configMotionProfileTrajectoryPeriod(10, RobotMap.kTimeoutMs);
 		/*
 		 * status 10 provides the trajectory target for motion profile AND
 		 * motion magic
 		 */
 		_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, RobotMap.kTimeoutMs);
-		
+
 		_talon2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		_talon2.setSensorPhase(true); /* keep sensor and motor in phase */
 		_talon2.configNeutralDeadband(RobotMap.kNeutralDeadband, RobotMap.kTimeoutMs);
@@ -417,7 +417,7 @@ public class MotionProfileSubsystem extends Subsystem{
 		_talon2.config_kD(0, 20.0, RobotMap.kTimeoutMs);
 
 		/* Our profile uses 10ms timing */
-		_talon2.configMotionProfileTrajectoryPeriod(10, RobotMap.kTimeoutMs); 
+		_talon2.configMotionProfileTrajectoryPeriod(10, RobotMap.kTimeoutMs);
 		/*
 		 * status 10 provides the trajectory target for motion profile AND
 		 * motion magic
@@ -429,6 +429,6 @@ public class MotionProfileSubsystem extends Subsystem{
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

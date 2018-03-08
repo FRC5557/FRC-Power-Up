@@ -18,13 +18,14 @@ public class ArmSubsystem extends Subsystem{
 	
 	WPI_TalonSRX wristMotortLeft = new WPI_TalonSRX(RobotMap.WRIST_MOTOR_LEFT);
 	WPI_TalonSRX wristMotortRight = new WPI_TalonSRX(RobotMap.WRIST_MOTOR_RIGHT);
-	SpeedControllerGroup wrist = new SpeedControllerGroup(wristMotortLeft, wristMotortRight);
+	public SpeedControllerGroup wrist = new SpeedControllerGroup(wristMotortLeft, wristMotortRight);
 	
 	WPI_TalonSRX intaketMotortLeft = new WPI_TalonSRX(RobotMap.INTAKE_MOTOR_LEFT);
 	WPI_TalonSRX intakeMotortRight = new WPI_TalonSRX(RobotMap.INTAKE_MOTOR_RIGHT);
 	SpeedControllerGroup intake = new SpeedControllerGroup(intaketMotortLeft, intakeMotortRight);
 
 	DigitalInput[] limSwitches = new DigitalInput[10];
+	public static double wristPower = -.1;
 	
 	@Override
 	protected void initDefaultCommand() {
@@ -34,7 +35,7 @@ public class ArmSubsystem extends Subsystem{
 		}
 		
 		lowerLeft.setInverted(true);
-		wristMotortLeft.setInverted(true);
+		wristMotortRight.setInverted(true);
 		intaketMotortLeft.setInverted(true);
 		
 	}
@@ -54,23 +55,35 @@ public class ArmSubsystem extends Subsystem{
 	}
 	
 	public void extend(){
-		double speed = Robot.prefs.getDouble("WristUpVoltage", 0);
-		wrist.set(1);
+		wristPower = .6;
 	}
 	
 	public void retract(){
-		double speed = Robot.prefs.getDouble("WristUpVoltage", 0);
-		wrist.set(-.7);
+		wristPower = -.6;
 	}
 	
-	public void expell(){
-		double speed = Robot.prefs.getDouble("IntakeUpVoltage", 0);
-		intake.set(-.3);
+	public void expell(int motor){
+		double speed = -.6;
+		switch(motor){
+		case 8:
+			intaketMotortLeft.set(speed);
+			break;
+		case 9:
+			intakeMotortRight.set(speed);
+			break;
+		}
 	}
 	
-	public void intake(){
-		double speed = Robot.prefs.getDouble("IntakeUpVoltage", 0);
-		intake.set(.2);
+	public void intake(int motor){
+		double speed = .2;
+		switch(motor){
+		case 8:
+			intaketMotortLeft.set(speed);
+			break;
+		case 9:
+			intakeMotortRight.set(speed);
+			break;
+		}
 	}
 
 	public boolean getLimSwitchStatus(int switchNumber){

@@ -7,6 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class IntakeCommand extends Command{
 
+	int motor;
+	
+	public IntakeCommand(int motor) {
+		this.motor = motor;
+	}
+	
 	@Override
 	protected void initialize() {
 		//requires(Robot.arm);
@@ -14,9 +20,7 @@ public class IntakeCommand extends Command{
 
 	@Override
 	protected void execute() {
-		Robot.arm.intake();
-		
-	
+		Robot.arm.intake(motor);
 	} 
 	
 	@Override

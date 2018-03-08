@@ -6,6 +6,12 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ExpellCommand extends Command {
 
+	int motor;
+	
+	public ExpellCommand(int motor) {
+		this.motor = motor;
+	}
+	
 	@Override
 	protected void initialize() {
 		//requires(Robot.arm);
@@ -13,7 +19,7 @@ public class ExpellCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.arm.expell();
+		Robot.arm.expell(motor);
 		
 	
 	} 

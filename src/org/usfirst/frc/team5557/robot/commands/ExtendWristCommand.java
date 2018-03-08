@@ -30,7 +30,7 @@ public class ExtendWristCommand extends Command{
 	
 	@Override
 	protected void end() {
-		Robot.arm.stop();
+		Robot.arm.wristPower = -.1;
 	}
 	
 }
