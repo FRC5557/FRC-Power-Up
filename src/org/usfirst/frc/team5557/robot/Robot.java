@@ -23,11 +23,9 @@ import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
 import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleAutoLine;
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLine;
-<<<<<<< HEAD
 import org.usfirst.frc.team5557.robot.commands.autogroups.SwitchOnSameSide;
-=======
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLineTalon;
->>>>>>> origin/master
+
 import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
@@ -58,17 +56,8 @@ public class Robot extends IterativeRobot {
 	public static final ArmSubsystem arm = new ArmSubsystem();
 	public static final ControllerSubsystem control = new ControllerSubsystem();
 	
-<<<<<<< HEAD
-/*	TalonSRX _talon = new TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
-	TalonSRX _talon2 = new TalonSRX(RobotMap.LEFT_REAR_MOTOR);
-	
-	*//** some example logic on how one can manage an MP *//*
-	MotionProfileSubsystem _example = new MotionProfileSubsystem(_talon, GeneratedMotionProfile.motionProfilePointsRight, GeneratedMotionProfile.numPointsRight);
-	MotionProfileSubsystem _exampleButTheOtherOne = new MotionProfileSubsystem(_talon2, GeneratedMotionProfile.motionProfilePointsLeft, GeneratedMotionProfile.numPointsLeft);
-*/
-=======
+
 	public static final MotionProfileSubsystem mp = new MotionProfileSubsystem(new GeneratedMotionProfile());
->>>>>>> origin/master
 	
 	public static OI oi;
 	public static Preferences prefs = Preferences.getInstance();
@@ -76,15 +65,10 @@ public class Robot extends IterativeRobot {
 	public static final ADIS16448_IMU imu = new ADIS16448_IMU();
 
 	Command autonomousCommand;
-<<<<<<< HEAD
 	
 	SendableChooser<Command> autonObjectiveChooser = new SendableChooser<Command>();
-=======
-
-	SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
 	SendableChooser<Command> controlChooser = new SendableChooser<Command>();
->>>>>>> origin/master
 	
 	int aPerFlag = 0;
 	  
@@ -164,22 +148,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
-<<<<<<< HEAD
-		
-		/*
-		 * it's generally a good idea to put motor controllers back into a known
-		 * state when robot is disabled. That way when you enable the robot
-		 * doesn't just continue doing what it was doing before. BUT if that's
-		 * what the application/testing requires than modify this accordingly
-		 
-		_talon.set(ControlMode.PercentOutput, 0);
-		_talon2.set(ControlMode.PercentOutput, 0);
-		 clear our buffer and put everything into a known state 
-		_example.reset();
-		_exampleButTheOtherOne.reset();*/
-=======
 		mp.clearMPState();
->>>>>>> origin/master
 	}
 
 	/**
@@ -200,7 +169,6 @@ public class Robot extends IterativeRobot {
 		//drive.autonTalonInit(NeutralMode.Brake);
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-<<<<<<< HEAD
 		if(gameData != null){
 			if(gameData.charAt(0) == 'R'){
 				System.out.println("Caught FMS data Right");
@@ -215,54 +183,6 @@ public class Robot extends IterativeRobot {
 				autonomousCommand.start();
 		}
 		
-/*		_talon.setInverted(true);
-		_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		_talon.setSensorPhase(true);  keep sensor and motor in phase 
-		_talon.configNeutralDeadband(RobotMap.kNeutralDeadband, RobotMap.kTimeoutMs);
-
-		_talon.config_kF(0, 0.076, RobotMap.kTimeoutMs);
-		_talon.config_kP(0, 2.000, RobotMap.kTimeoutMs);
-		_talon.config_kI(0, 0.0, RobotMap.kTimeoutMs);
-		_talon.config_kD(0, 20.0, RobotMap.kTimeoutMs);
-
-		 Our profile uses 10ms timing 
-		_talon.configMotionProfileTrajectoryPeriod(10, RobotMap.kTimeoutMs); 
-		
-		 * status 10 provides the trajectory target for motion profile AND
-		 * motion magic
-		 
-		_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, RobotMap.kTimeoutMs);
-		
-		_talon2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		_talon2.setSensorPhase(true);  keep sensor and motor in phase 
-		_talon2.configNeutralDeadband(RobotMap.kNeutralDeadband, RobotMap.kTimeoutMs);
-
-		_talon2.config_kF(0, 0.076, RobotMap.kTimeoutMs);
-		_talon2.config_kP(0, 2.000, RobotMap.kTimeoutMs);
-		_talon2.config_kI(0, 0.0, RobotMap.kTimeoutMs);
-		_talon2.config_kD(0, 20.0, RobotMap.kTimeoutMs);
-
-		 Our profile uses 10ms timing 
-		_talon2.configMotionProfileTrajectoryPeriod(10, RobotMap.kTimeoutMs); 
-		
-		 * status 10 provides the trajectory target for motion profile AND
-		 * motion magic
-		 
-		_talon2.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, RobotMap.kTimeoutMs);*/
-		
-=======
-		if(gameData.charAt(0) == 'R')
-		{
-			autonomousCommand = new RightAutoLineTalon();
-		} else {
-			autonomousCommand = new MiddleAutoLine();
-		}
-		if(autonomousCommand != null){
-			autonomousCommand.start();
-		}
-		
->>>>>>> origin/master
-		
 	}
 
 	/**
@@ -271,33 +191,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-<<<<<<< HEAD
-		
-		/*
-		 * call this periodically, and catch the output. Only apply it if user
-		 * wants to run MP.
-		 
-		_example.control();
-		_exampleButTheOtherOne.control();
-		
-		_example.reset();
-		_exampleButTheOtherOne.reset();
-		
-		SetValueMotionProfile setOutput = _example.getSetValue();
-
-		_talon.set(ControlMode.MotionProfile, setOutput.value);
-		_talon2.set(ControlMode.MotionProfile, setOutput.value);
-		
-		_example.startMotionProfile();
-		_exampleButTheOtherOne.startMotionProfile();*/
-=======
 		SetValueMotionProfile setOutput = mp.getSetValue();
 
 		mp._talon.set(ControlMode.MotionProfile, setOutput.value);
 		mp._talon2.set(ControlMode.MotionProfile, setOutput.value);
 		mp.control();
-
->>>>>>> origin/master
 	}
 
 	@Override
