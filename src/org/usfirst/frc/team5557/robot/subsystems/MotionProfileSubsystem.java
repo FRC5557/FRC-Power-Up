@@ -25,18 +25,24 @@ package org.usfirst.frc.team5557.robot.subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
+import res.GeneratedMotionProfile;
 import utils.MotionProfileReporter;
 
+import org.usfirst.frc.team5557.robot.Robot;
 import org.usfirst.frc.team5557.robot.RobotMap;
 
 import com.ctre.phoenix.motion.*;
 import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 
-public class MotionProfileSubsystem {
+public class MotionProfileSubsystem extends Subsystem{
 
 	/**
 	 * The status of the motion profile executer and buffer inside the Talon.
@@ -44,8 +50,10 @@ public class MotionProfileSubsystem {
 	 * keep one copy.
 	 */
 	private MotionProfileStatus _status = new MotionProfileStatus();
-	private double[][] coolPoints;
-	private int numPoints;
+	private double[][] pointsRight;
+	private double[][] pointsLeft;
+	private int numPointsRight;
+	private int numPointsLeft;
 
 	/** additional cache for holding the active trajectory point */
 	double _pos=0,_vel=0,_heading=0;
@@ -55,7 +63,9 @@ public class MotionProfileSubsystem {
 	 * or call set(), just get motion profile status and make decisions based on
 	 * motion profile.
 	 */
-	private TalonSRX _talon;
+
+	public WPI_TalonSRX _talon = Robot.drive.getTalon(MotorType.kFrontRight);
+	public WPI_TalonSRX _talon2 = Robot.drive.getTalon(MotorType.kRearLeft);
 	/**
 	 * State machine to make sure we let enough of the motion profile stream to
 	 * talon before we fire it.
@@ -103,7 +113,11 @@ public class MotionProfileSubsystem {
 	 * every 10ms.
 	 */
 	class PeriodicRunnable implements java.lang.Runnable {
-	    public void run() {  _talon.processMotionProfileBuffer();    }
+	    public void run() {
+	    	_talon.processMotionProfileBuffer();
+	    	_talon2.processMotionProfileBuffer();
+
+	    }
 	}
 	Notifier _notifer = new Notifier(new PeriodicRunnable());
 	
@@ -116,10 +130,11 @@ public class MotionProfileSubsystem {
 	 * @param points 
 	 *			  reference to 2D array containing motion profile points
 	 */
-	public MotionProfileSubsystem(TalonSRX talon, double[][] points, int numPoints) {
-		_talon = talon;
-		coolPoints = points;
-		this.numPoints = numPoints;
+	public MotionProfileSubsystem(GeneratedMotionProfile motionProfile) {
+		this.pointsRight = motionProfile.motionProfilePointsRight;
+		this.pointsLeft = motionProfile.motionProfilePointsLeft;
+		this.numPointsRight = motionProfile.numPointsRight;
+		this.numPointsLeft = motionProfile.numPointsLeft;
 		/*
 		 * since our MP is 10ms per point, set the control frame rate and the
 		 * notifer to half that
@@ -157,7 +172,6 @@ public class MotionProfileSubsystem {
 	public void control() {
 		/* Get the motion profile status every loop */
 		_talon.getMotionProfileStatus(_status);
-
 		/*
 		 * track time, this is rudimentary but that's okay, we just want to make
 		 * sure things never get stuck.
@@ -176,7 +190,6 @@ public class MotionProfileSubsystem {
 				--_loopTimeout;
 			}
 		}
-
 		/* first check if we are in MP mode */
 		if (_talon.getControlMode() != ControlMode.MotionProfile) {
 			/*
@@ -185,6 +198,7 @@ public class MotionProfileSubsystem {
 			 */
 			_state = 0;
 			_loopTimeout = -1;
+			System.out.println("Talon control mode was not MotionProfile");
 		} else {
 			/*
 			 * we are in MP control mode. That means: starting Mps, checking Mp
@@ -194,6 +208,7 @@ public class MotionProfileSubsystem {
 			switch (_state) {
 				case 0: /* wait for application to tell us to start an MP */
 					if (_bStart) {
+						System.out.println("bStart change picked up");
 						_bStart = false;
 	
 						_setValue = SetValueMotionProfile.Disable;
@@ -275,13 +290,14 @@ public class MotionProfileSubsystem {
 	/** Start filling the MPs to all of the involved Talons. */
 	private void startFilling() {
 		/* since this example only has one talon, just update that one */
-		startFilling(coolPoints, numPoints);
+		startFilling(pointsRight, numPointsRight);
 	}
 
 	private void startFilling(double[][] profile, int totalCnt) {
 
 		/* create an empty point */
-		TrajectoryPoint point = new TrajectoryPoint();
+		TrajectoryPoint pointRight = new TrajectoryPoint();
+		TrajectoryPoint pointLeft = new TrajectoryPoint();
 
 		/* did we get an underrun condition since last time we checked ? */
 		if (_status.hasUnderrun) {
@@ -292,36 +308,58 @@ public class MotionProfileSubsystem {
 			 * we never miss logging it.
 			 */
 			_talon.clearMotionProfileHasUnderrun(0);
+			_talon2.clearMotionProfileHasUnderrun(0);
 		}
 		/*
 		 * just in case we are interrupting another MP and there is still buffer
 		 * points in memory, clear it.
 		 */
 		_talon.clearMotionProfileTrajectories();
+		_talon2.clearMotionProfileTrajectories();
+
 
 		/* set the base trajectory period to zero, use the individual trajectory period below */
 		_talon.configMotionProfileTrajectoryPeriod(RobotMap.kBaseTrajPeriodMs, RobotMap.kTimeoutMs);
-		
+		_talon2.configMotionProfileTrajectoryPeriod(RobotMap.kBaseTrajPeriodMs, RobotMap.kTimeoutMs);
+
 		/* This is fast since it's just into our TOP buffer */
 		for (int i = 0; i < totalCnt; ++i) {
-			double positionRot = profile[i][0];
-			double velocityRPM = profile[i][1];
+			double positionRotRight = pointsRight[i][0];
+			double velocityRPMRight = pointsRight[i][1];
 			/* for each point, fill our structure and pass it to API */
-			point.position = positionRot * RobotMap.TICKS_PER_ROTATION; //Convert Revolutions to Units
-			point.velocity = velocityRPM * RobotMap.TICKS_PER_ROTATION / 600.0; //Convert RPM to Units/100ms
-			point.headingDeg = 0; /* future feature - not used in this example*/
-			point.profileSlotSelect0 = 0; /* which set of gains would you like to use [0,3]? */
-			point.profileSlotSelect1 = 0; /* future feature  - not used in this example - cascaded PID [0,1], leave zero */
-			point.timeDur = GetTrajectoryDuration((int)profile[i][2]);
-			point.zeroPos = false;
+			pointRight.position = positionRotRight * RobotMap.TICKS_PER_ROTATION; //Convert Revolutions to Units
+			pointRight.velocity = velocityRPMRight * RobotMap.TICKS_PER_ROTATION / 600.0; //Convert RPM to Units/100ms
+			pointRight.headingDeg = 0; /* future feature - not used in this example*/
+			pointRight.profileSlotSelect0 = 0; /* which set of gains would you like to use [0,3]? */
+			pointRight.profileSlotSelect1 = 0; /* future feature  - not used in this example - cascaded PID [0,1], leave zero */
+			pointRight.timeDur = GetTrajectoryDuration((int)pointsRight[i][2]);
+			pointRight.zeroPos = false;
 			if (i == 0)
-				point.zeroPos = true; /* set this to true on the first point */
+				pointRight.zeroPos = true; /* set this to true on the first point */
 
-			point.isLastPoint = false;
+			pointRight.isLastPoint = false;
 			if ((i + 1) == totalCnt)
-				point.isLastPoint = true; /* set this to true on the last point  */
+				pointRight.isLastPoint = true; /* set this to true on the last point  */
 
-			_talon.pushMotionProfileTrajectory(point);
+			double positionRotLeft = pointsLeft[i][0];
+			double velocityRPMLeft = pointsLeft[i][1];
+			/* for each point, fill our structure and pass it to API */
+			pointLeft.position = positionRotLeft * RobotMap.TICKS_PER_ROTATION; //Convert Revolutions to Units
+			pointLeft.velocity = velocityRPMLeft * RobotMap.TICKS_PER_ROTATION / 600.0; //Convert RPM to Units/100ms
+			pointLeft.headingDeg = 0; /* future feature - not used in this example*/
+			pointLeft.profileSlotSelect0 = 0; /* which set of gains would you like to use [0,3]? */
+			pointLeft.profileSlotSelect1 = 0; /* future feature  - not used in this example - cascaded PID [0,1], leave zero */
+			pointLeft.timeDur = GetTrajectoryDuration((int)pointsLeft[i][2]);
+			pointLeft.zeroPos = false;
+			if (i == 0)
+				pointLeft.zeroPos = true; /* set this to true on the first point */
+
+			pointLeft.isLastPoint = false;
+			if ((i + 1) == totalCnt)
+				pointLeft.isLastPoint = true; /* set this to true on the last point  */
+
+			_talon.pushMotionProfileTrajectory(pointRight);
+			_talon2.pushMotionProfileTrajectory(pointLeft);
 		}
 	}
 	/**
@@ -329,6 +367,7 @@ public class MotionProfileSubsystem {
 	 * able to).
 	 */
 	public void startMotionProfile() {
+		System.out.println("Staring Profile");
 		_bStart = true;
 	}
 
@@ -340,5 +379,56 @@ public class MotionProfileSubsystem {
 	 */
 	public SetValueMotionProfile getSetValue() {
 		return _setValue;
+	}
+
+	public void clearMPState() {
+		_talon.set(ControlMode.PercentOutput, 0);
+		_talon2.set(ControlMode.PercentOutput, 0);
+		/* clear our buffer and put everything into a known state */
+		reset();
+	}
+
+	public void configTalonForProfile() {
+		_talon.setInverted(true);
+		_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		_talon.setSensorPhase(true); /* keep sensor and motor in phase */
+		_talon.configNeutralDeadband(RobotMap.kNeutralDeadband, RobotMap.kTimeoutMs);
+
+		_talon.config_kF(0, 0.071, RobotMap.kTimeoutMs);
+		_talon.config_kP(0, 2.000, RobotMap.kTimeoutMs);
+		_talon.config_kI(0, 0.0, RobotMap.kTimeoutMs);
+		_talon.config_kD(0, 20.0, RobotMap.kTimeoutMs);
+
+		/* Our profile uses 10ms timing */
+		_talon.configMotionProfileTrajectoryPeriod(10, RobotMap.kTimeoutMs);
+		/*
+		 * status 10 provides the trajectory target for motion profile AND
+		 * motion magic
+		 */
+		_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, RobotMap.kTimeoutMs);
+
+		_talon2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		_talon2.setSensorPhase(true); /* keep sensor and motor in phase */
+		_talon2.configNeutralDeadband(RobotMap.kNeutralDeadband, RobotMap.kTimeoutMs);
+
+		_talon2.config_kF(0, 0.071, RobotMap.kTimeoutMs);
+		_talon2.config_kP(0, 2.000, RobotMap.kTimeoutMs);
+		_talon2.config_kI(0, 0.0, RobotMap.kTimeoutMs);
+		_talon2.config_kD(0, 20.0, RobotMap.kTimeoutMs);
+
+		/* Our profile uses 10ms timing */
+		_talon2.configMotionProfileTrajectoryPeriod(10, RobotMap.kTimeoutMs);
+		/*
+		 * status 10 provides the trajectory target for motion profile AND
+		 * motion magic
+		 */
+		_talon2.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, RobotMap.kTimeoutMs);
+		System.out.println("Talons Ready for MP");
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+
 	}
 }

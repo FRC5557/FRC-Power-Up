@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import org.usfirst.frc.team5557.robot.commands.ClimbCommand;
 import org.usfirst.frc.team5557.robot.commands.DanceCommand;
 import org.usfirst.frc.team5557.robot.commands.ExpellCommand;
 import org.usfirst.frc.team5557.robot.commands.ExtendWristCommand;
