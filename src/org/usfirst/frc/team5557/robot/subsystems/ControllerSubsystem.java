@@ -17,20 +17,12 @@ public class ControllerSubsystem extends Subsystem{
 	
 	//sets the channels for each type of controller
 	public void setController(int layout){
-		switch(layout){
-			case 0: //Sticks
-				OI.driveStickZero.setTwistChannel(2);
-				OI.driveStickZero.setYChannel(1);
-				break;
-			case 1: //Controller
-				System.out.println("Gamepad");
-				OI.driveStickZero.setXChannel(0);
-				OI.driveStickZero.setTwistChannel(3);
-				OI.driveStickZero.setThrottleChannel(4);
-				OI.driveStickZero.setZChannel(2);
-				restingTriggerVals = triggerCalibrate();
-				break;
-		}
+		System.out.println("Gamepad");
+		OI.driveStickZero.setXChannel(0);
+		OI.driveStickZero.setTwistChannel(3);
+		OI.driveStickZero.setThrottleChannel(4);
+		OI.driveStickZero.setZChannel(2);
+		restingTriggerVals = triggerCalibrate();
 	}
 	
 	public double getTrigerThrottle(double leftT, double rightT){

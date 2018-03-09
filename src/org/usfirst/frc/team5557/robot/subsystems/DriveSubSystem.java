@@ -65,7 +65,7 @@ public class DriveSubSystem extends Subsystem{
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new ManualDriveCommand());
-		Robot.control.setController(0);
+		Robot.control.setController(1);
 	}
 	
 	public void drive() {
@@ -73,19 +73,9 @@ public class DriveSubSystem extends Subsystem{
 		layoutInt = Robot.control.getLayoutInt();
 		double turn = 0;
 		double throttle = 0;
-		switch(layoutInt){
-			case 0:
-				//Flight Sticks Drive
-				turn = OI.driveStickZero.getTwist();
-				throttle = -OI.driveStickZero.getY();
-				break;
-			case 1:
-				//Controller Drive
-				turn = OI.driveStickZero.getX() > 0 ? OI.driveStickZero.getX()*1 : OI.driveStickOne.getX()*1;
-				throttle = Robot.control.getTrigerThrottle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
-				break;
-				
-		}
+		//Controller Drive
+		turn = OI.driveStickZero.getX() > 0 ? OI.driveStickZero.getX()*1 : OI.driveStickOne.getX()*1;
+		throttle = Robot.control.getTrigerThrottle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
 		difDrive.arcadeDrive(throttle,turn);
 	}
 	

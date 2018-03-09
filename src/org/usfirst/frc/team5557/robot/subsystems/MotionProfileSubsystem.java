@@ -33,7 +33,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
-import res.GeneratedMotionProfile;
+import res.RightAutoLineCubeMotionProfile;
 import utils.MotionProfileReporter;
 
 import org.usfirst.frc.team5557.robot.Robot;
@@ -130,7 +130,7 @@ public class MotionProfileSubsystem extends Subsystem{
 	 * @param points 
 	 *			  reference to 2D array containing motion profile points
 	 */
-	public MotionProfileSubsystem(GeneratedMotionProfile motionProfile) {
+	public MotionProfileSubsystem(RightAutoLineCubeMotionProfile motionProfile) {
 		this.pointsRight = motionProfile.motionProfilePointsRight;
 		this.pointsLeft = motionProfile.motionProfilePointsLeft;
 		this.numPointsRight = motionProfile.numPointsRight;
@@ -394,7 +394,7 @@ public class MotionProfileSubsystem extends Subsystem{
 		_talon.setSensorPhase(true); /* keep sensor and motor in phase */
 		_talon.configNeutralDeadband(RobotMap.kNeutralDeadband, RobotMap.kTimeoutMs);
 
-		_talon.config_kF(0, 0.071, RobotMap.kTimeoutMs);
+		_talon.config_kF(0, 0.2948, RobotMap.kTimeoutMs);
 		_talon.config_kP(0, 2.000, RobotMap.kTimeoutMs);
 		_talon.config_kI(0, 0.0, RobotMap.kTimeoutMs);
 		_talon.config_kD(0, 20.0, RobotMap.kTimeoutMs);
@@ -411,7 +411,7 @@ public class MotionProfileSubsystem extends Subsystem{
 		_talon2.setSensorPhase(true); /* keep sensor and motor in phase */
 		_talon2.configNeutralDeadband(RobotMap.kNeutralDeadband, RobotMap.kTimeoutMs);
 
-		_talon2.config_kF(0, 0.071, RobotMap.kTimeoutMs);
+		_talon2.config_kF(0, 0.3085, RobotMap.kTimeoutMs);
 		_talon2.config_kP(0, 2.000, RobotMap.kTimeoutMs);
 		_talon2.config_kI(0, 0.0, RobotMap.kTimeoutMs);
 		_talon2.config_kD(0, 20.0, RobotMap.kTimeoutMs);

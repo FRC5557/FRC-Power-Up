@@ -13,12 +13,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
-import res.GeneratedMotionProfile;
+import res.RightAutoLineCubeMotionProfile;
 
 public class RightAutoLineTalon extends CommandGroup{
 	
 	/** some example logic on how one can manage an MP */
-	MotionProfileSubsystem _example = new MotionProfileSubsystem(new GeneratedMotionProfile());
+	MotionProfileSubsystem _example = new MotionProfileSubsystem(new RightAutoLineCubeMotionProfile());
 
 	
 	

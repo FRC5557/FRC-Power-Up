@@ -12,17 +12,18 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import res.GeneratedMotionProfile;
+import res.RightAutoLineCubeMotionProfile;
 
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
 import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleAutoLine;
-import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLine;
+import org.usfirst.frc.team5557.robot.commands.autogroups.AutoLine;
 import org.usfirst.frc.team5557.robot.commands.autogroups.SwitchOnSameSide;
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLineTalon;
 
@@ -57,7 +58,7 @@ public class Robot extends IterativeRobot {
 	public static final ControllerSubsystem control = new ControllerSubsystem();
 	
 
-	public static final MotionProfileSubsystem mp = new MotionProfileSubsystem(new GeneratedMotionProfile());
+	public static final MotionProfileSubsystem mp = new MotionProfileSubsystem(new RightAutoLineCubeMotionProfile());
 	
 	public static OI oi;
 	public static Preferences prefs = Preferences.getInstance();
@@ -66,9 +67,9 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 	
-	SendableChooser<Command> autonObjectiveChooser = new SendableChooser<Command>();
-
-	SendableChooser<Command> controlChooser = new SendableChooser<Command>();
+	SendableChooser<Integer> autonObjectiveChooser = new SendableChooser<Integer>();
+	
+	SendableChooser<Integer> autonPositionChooser = new SendableChooser<Integer>();
 	
 	int aPerFlag = 0;
 	  
@@ -83,23 +84,25 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		oi = new OI();
 
-		autonObjectiveChooser.addDefault("Default Auto", new RightAutoLine());
-		autonObjectiveChooser.addObject("My Auto", new MiddleAutoLine());
-		SmartDashboard.putData(autonObjectiveChooser);
+		autonPositionChooser.addDefault("Right", new Integer(0));
+		autonPositionChooser.addObject("Middle", new Integer(1));
+		autonPositionChooser.addObject("Left", new Integer(2));
+		SmartDashboard.putData(autonPositionChooser);
 		
-		//buttons
-		SmartDashboard.putData("Flight Sticks: ", new SwapDriveComand("STICKS"));
-		SmartDashboard.putData("Game Pad: ", new SwapDriveComand("CONTROLLER"));
+		autonObjectiveChooser.addDefault("Autoline", new Integer(0));
+		autonObjectiveChooser.addObject("Switch", new Integer(1));
+		autonObjectiveChooser.addObject("Scale", new Integer(2));
+		SmartDashboard.putData(autonObjectiveChooser);
 		
 		sensors.resetEncoders();
 		 new Thread(() -> {
              UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-             camera.setResolution(640, 480);
-             camera.setFPS(25);
+             camera.setResolution(352, 240);
+             camera.setFPS(30);
              camera.setExposureAuto();
              
              CvSink cvSink = CameraServer.getInstance().getVideo();
-             CvSource outputStream = CameraServer.getInstance().putVideo("Main Camera", 640, 480);
+             CvSource outputStream = CameraServer.getInstance().putVideo("Main Camera", 352, 288);
              
              Mat source = new Mat();
              Mat output = new Mat();
@@ -107,6 +110,7 @@ public class Robot extends IterativeRobot {
              while(!Thread.interrupted()) {
                  cvSink.grabFrame(source);
                  Imgproc.cvtColor(source, output, Imgproc.COLOR_RGB2GRAY);
+                 outputStream.setFPS(30);
                  outputStream.putFrame(output);
              }
          }).start();
@@ -121,8 +125,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Ultra (mm): ", sensors.getUltraWithVoltage());
 		SmartDashboard.putNumber("Encoder Right (cm): ", sensors.getDis(MotorType.kFrontRight));
 		SmartDashboard.putNumber("Encoder Left (cm): ", sensors.getDis(MotorType.kRearLeft));
-		SmartDashboard.putNumber("Left Stick", OI.driveStickZero.getY());
-		SmartDashboard.putNumber("Right Stick", OI.driveStickOne.getY());
 		SmartDashboard.putNumber("Left encoder ticks: ", drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition());
 		SmartDashboard.putNumber("Right encoder ticks: ", drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition());
 		prefs.getDouble("ArmUpVoltage", 0);
@@ -166,19 +168,34 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		imu.reset();
 		//autonomousCommand = autonObjectiveChooser.getSelected();
-		//drive.autonTalonInit(NeutralMode.Brake);
+		//drive.autonTalonInit(NeutralMode.Brake)
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData != null){
-			if(gameData.charAt(0) == 'R'){
-				System.out.println("Caught FMS data Right");
-				autonomousCommand = new SwitchOnSameSide();
-			} else if(gameData.charAt(0) == 'L'){
-				autonomousCommand = new RightAutoLine();
-			}else{
-				autonomousCommand = new RightAutoLine();
+			if(autonObjectiveChooser.getSelected().intValue() == 0){ //autoline
+				if(gameData.charAt(0) == 'R'){
+					System.out.println("Caught FMS data Right");
+					autonomousCommand = new AutoLine();
+				} else if(gameData.charAt(0) == 'L'){
+					autonomousCommand = new AutoLine();
+				}
+			}else if(autonObjectiveChooser.getSelected().intValue() == 1){ //switch
+				if(gameData.charAt(0) == 'R'){
+					System.out.println("Caught FMS data Right");
+					autonomousCommand = new SwitchOnSameSide();
+				} else if(gameData.charAt(0) == 'L'){
+					autonomousCommand = new SwitchOnSameSide();
+				}
+			}else if(autonObjectiveChooser.getSelected().intValue() == 2){ //scale
+				if(gameData.charAt(0) == 'R'){
+					System.out.println("Caught FMS data Right");
+					autonomousCommand = new RightAutoLineTalon();
+				} else if(gameData.charAt(0) == 'L'){
+					autonomousCommand = new RightAutoLineTalon();
+				}
 			}
 		}
+
 		if(autonomousCommand != null){
 				autonomousCommand.start();
 		}
@@ -217,6 +234,9 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		arm.raise(OI.driveStickZero.getZ());
 		arm.wrist.set(arm.wristPower);
+		
+		System.out.println("Objective Chosen: "+ autonObjectiveChooser.getSelected());
+		System.out.println("Position Chosen: "+ autonPositionChooser.getSelected());
 	}
 
 	/**

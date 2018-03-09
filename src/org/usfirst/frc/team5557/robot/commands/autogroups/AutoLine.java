@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 
-public class RightAutoLine extends CommandGroup{
-	public RightAutoLine() {
+public class AutoLine extends CommandGroup{
+	public AutoLine() {
 		System.out.println("Stating Right auton");
-		addSequential(new DriveForDistanceCommand(396.2));// Drive forward for 15 ft
-		addSequential(new TurnForAngleCommand(-90));
+		addSequential(new DriveForDistanceCommand(470));// Drive forward for 15 ft
+		//addSequential(new TurnForAngleCommand(-90));
 	} 
 }
