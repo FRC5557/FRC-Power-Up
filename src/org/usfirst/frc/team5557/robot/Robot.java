@@ -22,11 +22,17 @@ import res.RightAutoLineCubeMotionProfile;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftAutoLine;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftRightSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftSwitch;
 import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleAutoLine;
 import org.usfirst.frc.team5557.robot.commands.autogroups.AutoLine;
+import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleLeftSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleRightSwitch;
 import org.usfirst.frc.team5557.robot.commands.autogroups.SwitchOnSameSide;
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLineTalon;
-
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightLeftSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightSwitch;
 import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
@@ -72,8 +78,9 @@ public class Robot extends IterativeRobot {
 	SendableChooser<Integer> autonPositionChooser = new SendableChooser<Integer>();
 	
 	int aPerFlag = 0;
+	
+	int startingPosition = 0;
 	  
-
 
 
 	/**
@@ -166,6 +173,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		
+		//TODO: ADD INPUT / OTHER WAY TO DETERMINE OR ENTER STARTING POSITION ON startingPosition
+		
 		imu.reset();
 		//autonomousCommand = autonObjectiveChooser.getSelected();
 		//drive.autonTalonInit(NeutralMode.Brake)
@@ -195,7 +205,6 @@ public class Robot extends IterativeRobot {
 				}
 			}
 		}
-
 		if(autonomousCommand != null){
 				autonomousCommand.start();
 		}
