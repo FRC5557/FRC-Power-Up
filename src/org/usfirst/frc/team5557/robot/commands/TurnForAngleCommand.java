@@ -35,7 +35,7 @@ public class TurnForAngleCommand extends Command {
 	@Override
 	protected void execute() {
 		if (angleInTicks > 0){
-			if(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() <= -angleInTicks) {
+			if(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= angleInTicks) {
 				pastF1 = true;
 				Robot.drive.computerDrive(0, -.5);
 			}else{Robot.drive.computerDrive(0,.7);}

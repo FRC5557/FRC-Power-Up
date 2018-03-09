@@ -59,7 +59,7 @@ public class ArmSubsystem extends Subsystem{
 	}
 	
 	public void retract(){
-		wristPower = -.6;
+		wristPower = -1;
 	}
 	
 	public void expell(int motor){

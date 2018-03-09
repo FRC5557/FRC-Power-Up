@@ -4,12 +4,11 @@ import org.usfirst.frc.team5557.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class RaiseArmCommand extends Command{
-
+public class ExtendWristForTime extends Command {
 	long millis;
 	int timeToRun;
-	public RaiseArmCommand(int timeInMs) {
-		timeToRun = timeInMs > 3000 ? 2900: timeInMs;
+	public ExtendWristForTime() {
+		timeToRun = 500;
 	}
 	
 	@Override
@@ -20,14 +19,14 @@ public class RaiseArmCommand extends Command{
 
 	@Override
 	protected void execute() {
-		Robot.arm.raise(.5);
+		Robot.arm.wrist.set(.6);
 		
 	} 
 	
 	@Override
 	protected boolean isFinished() {
 		if(System.currentTimeMillis() - millis >= timeToRun ){
-			System.out.println("arm raised");
+			System.out.println("wrist extended");
 			return true;
 		}
 		
