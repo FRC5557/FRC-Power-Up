@@ -95,4 +95,20 @@ public class ArmSubsystem extends Subsystem{
 		wrist.set(0);
 		intake.set(0);
 	}
+
+	
+	public void shoot(int motor){
+		double speed = -.2;
+		switch(motor){
+		case 8:
+			intaketMotortLeft.set(speed);
+			break;
+		case 9:
+			intakeMotortRight.set(speed);
+			break;
+		}
+	}
+	
+	
+	
 }

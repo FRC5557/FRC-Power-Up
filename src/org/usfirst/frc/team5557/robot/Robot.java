@@ -21,11 +21,17 @@ import res.GeneratedMotionProfile;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftAutoLine;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftRightSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftSwitch;
 import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleAutoLine;
+import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleLeftSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleRightSwitch;
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLine;
 import org.usfirst.frc.team5557.robot.commands.autogroups.SwitchOnSameSide;
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLineTalon;
-
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightLeftSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightSwitch;
 import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
@@ -71,8 +77,9 @@ public class Robot extends IterativeRobot {
 	SendableChooser<Command> controlChooser = new SendableChooser<Command>();
 	
 	int aPerFlag = 0;
+	
+	int startingPosition = 0;
 	  
-
 
 
 	/**
@@ -164,21 +171,57 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		
+		//TODO: ADD INPUT / OTHER WAY TO DETERMINE OR ENTER STARTING POSITION ON startingPosition
+		
 		imu.reset();
 		//autonomousCommand = autonObjectiveChooser.getSelected();
 		//drive.autonTalonInit(NeutralMode.Brake);
+		/*
+		 * This gets the color for the switch
+		 */
+		
+		// Auto cases for different starting positions
+		
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData != null){
 			if(gameData.charAt(0) == 'R'){
 				System.out.println("Caught FMS data Right");
-				autonomousCommand = new SwitchOnSameSide();
+//				autonomousCommand = new SwitchOnSameSide();
+				
+				// left
+				if(startingPosition == 0) {
+					autonomousCommand = new LeftRightSwitch();
+				} // middle 
+				else if (startingPosition == 1) {
+					autonomousCommand  = new MiddleRightSwitch();
+				} // right
+				else if (startingPosition == 2) {
+					autonomousCommand = new RightSwitch();
+					
+				}
+				
+					
+				
 			} else if(gameData.charAt(0) == 'L'){
-				autonomousCommand = new RightAutoLine();
-			}else{
-				autonomousCommand = new RightAutoLine();
+				
+				// left
+				if(startingPosition == 0) {
+					autonomousCommand = new LeftSwitch();
+				} // middle 
+				else if (startingPosition == 1) {
+					autonomousCommand = new MiddleLeftSwitch();
+				} // right
+				else if (startingPosition == 2) {
+					autonomousCommand = new RightLeftSwitch();
+					
+				}
+				
+			
 			}
-		}
+		} // 
+		
 		if(autonomousCommand != null){
 				autonomousCommand.start();
 		}
