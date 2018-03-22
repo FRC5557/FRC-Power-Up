@@ -13,17 +13,21 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 public class TurnForAngleCommand extends Command {
 	private double angleInTicks;
 	private boolean pastF1;
+	long millis;
+	int timeToRun;
 
 	public TurnForAngleCommand(double angle) {
 		requires(Robot.drive);
-		angleInTicks = angle > 0 ? ((((RobotMap.ROBOT_DIAMETER*Math.PI)/360)*(angle+90)+30)/RobotMap.WHEEL_CIRC)*4096 : ((((RobotMap.ROBOT_DIAMETER*Math.PI)/360)*(angle-90)-30)/RobotMap.WHEEL_CIRC)*4096;
+		//angleInTicks = angle > 0 ? ((((RobotMap.ROBOT_DIAMETER*Math.PI)/360)*(angle+90)+30)/RobotMap.WHEEL_CIRC)*4096 : ((((RobotMap.ROBOT_DIAMETER*Math.PI)/360)*(angle-90)-30)/RobotMap.WHEEL_CIRC)*4096;
 		System.out.println(angleInTicks);
+		timeToRun = 2000;
 	}
 
 	
 	
 	@Override
 	protected void initialize() {
+		millis = System.currentTimeMillis();
 		Robot.sensors.resetEncoders();
 	}
 
@@ -34,7 +38,8 @@ public class TurnForAngleCommand extends Command {
 	 
 	@Override
 	protected void execute() {
-		if (angleInTicks > 0){
+		Robot.drive.computerDrive(0, -.2);
+	/*	if (angleInTicks > 0){
 			if(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= angleInTicks) {
 				pastF1 = true;
 				Robot.drive.computerDrive(0, -.5);
@@ -44,7 +49,7 @@ public class TurnForAngleCommand extends Command {
 				pastF1 = true;
 				Robot.drive.computerDrive(0, .5);
 			}else{Robot.drive.computerDrive(0,-.7);}	
-		}
+		}*/
 	}
 
 	 /*Needs to be updated Checks if distance is greater than wheel
@@ -72,7 +77,7 @@ public class TurnForAngleCommand extends Command {
 		return false;
 	}*/
 	
-	@Override
+/*	@Override
 	protected boolean isFinished() {
 		System.out.println(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() + ", " + -angleInTicks);
 		if(angleInTicks>0){
@@ -88,7 +93,17 @@ public class TurnForAngleCommand extends Command {
 	}
 
 		
+	*/
 	
+	@Override
+	protected boolean isFinished() {
+		if(System.currentTimeMillis() - millis >= timeToRun ){
+			System.out.println("Turn finished");
+			return true;
+		}
+		
+		return false;
+	}
 
 	@Override
 	protected void end() {

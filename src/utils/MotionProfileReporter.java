@@ -54,13 +54,13 @@ public class MotionProfileReporter {
 			double vel, double heading) {
 		double now = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
 
-		if ((now - timeout) > 0.2) {
+		/*if ((now - timeout) > 0.2) {
 			timeout = now;
-			/* fire a loop every 200ms */
+			 fire a loop every 200ms 
 
 			if (--count <= 0) {
 				count = 8;
-				/* every 8 loops, print our columns */
+				 every 8 loops, print our columns 
 
 				System.out.format("%-9s\t", "outEn");
 				System.out.format("%-9s\t", "topCnt");
@@ -77,7 +77,7 @@ public class MotionProfileReporter {
 
 				System.out.format("\n");
 			}
-			/* every loop, print our values */
+			 every loop, print our values 
 			System.out.format("%-9s\t", StrOutputEnable(status.outputEnable));
 			System.out.format("%-9s\t", status.topBufferCnt);
 			System.out.format("%-9s\t", status.topBufferRem);
@@ -92,6 +92,6 @@ public class MotionProfileReporter {
 			System.out.format("%-9s\t", status.timeDurMs);
 
 			System.out.format("\n");
-		}
+		}*/
 	}
 }

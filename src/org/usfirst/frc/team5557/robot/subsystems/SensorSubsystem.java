@@ -66,7 +66,7 @@ public class SensorSubsystem extends Subsystem {
 		//10.71:1 ration cim to hex shaft
 		//1:1 for hex shaft to wheels
 
-		int BR = -1*(Robot.drive.getTalonSensorC(MotorType.kRearRight).getQuadraturePosition());
+		int BR = -1*(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition());
 		int FL = Robot.drive.getTalonSensorC(MotorType.kFrontLeft).getQuadraturePosition();
 		
 		System.out.printf("Front Left %d, Back Right: %d \n", FL, BR);

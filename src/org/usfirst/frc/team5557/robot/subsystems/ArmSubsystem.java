@@ -4,11 +4,13 @@ import org.usfirst.frc.team5557.robot.OI;
 import org.usfirst.frc.team5557.robot.Robot;
 import org.usfirst.frc.team5557.robot.RobotMap;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 
 public class ArmSubsystem extends Subsystem{
 	
@@ -109,6 +111,9 @@ public class ArmSubsystem extends Subsystem{
 		}
 	}
 	
-	
+	public void clearIntakeBreakMode(NeutralMode mode){
+		intakeMotortRight.setNeutralMode(mode);
+		intaketMotortLeft.setNeutralMode(mode);
+	}
 	
 }
