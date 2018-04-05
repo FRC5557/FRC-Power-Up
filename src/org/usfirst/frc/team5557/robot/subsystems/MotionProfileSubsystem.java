@@ -49,6 +49,8 @@ public class MotionProfileSubsystem extends Subsystem{
 	 * Instead of creating a new one every time we call getMotionProfileStatus,
 	 * keep one copy.
 	 */
+	private DriveSubSystem drive = DriveSubSystem.getInstance();
+	
 	private MotionProfileStatus _status = new MotionProfileStatus();
 	private double[][] pointsRight;
 	private double[][] pointsLeft;
@@ -64,8 +66,8 @@ public class MotionProfileSubsystem extends Subsystem{
 	 * motion profile.
 	 */
 
-	public WPI_TalonSRX _talon = Robot.drive.getTalon(MotorType.kFrontRight);
-	public WPI_TalonSRX _talon2 = Robot.drive.getTalon(MotorType.kRearLeft);
+	public WPI_TalonSRX _talon = drive.getTalon(MotorType.kFrontRight);
+	public WPI_TalonSRX _talon2 = drive.getTalon(MotorType.kRearLeft);
 	/**
 	 * State machine to make sure we let enough of the motion profile stream to
 	 * talon before we fire it.

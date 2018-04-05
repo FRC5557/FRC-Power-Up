@@ -1,7 +1,6 @@
 package org.usfirst.frc.team5557.robot.commands;
 
-import org.usfirst.frc.team5557.robot.Robot;
-import org.usfirst.frc.team5557.robot.OI;
+import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,11 +9,13 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ManualDriveCommand extends Command {
 
+	private DriveSubSystem drive = DriveSubSystem.getInstance();
+	
 	// Initializes the command with its name, as well as set DriveSubsystem to
 	// be required
 	public ManualDriveCommand() {
 		super("ManualDrive");
-		requires(Robot.drive);
+		requires(drive);
 	}
 
 	@Override
@@ -23,7 +24,7 @@ public class ManualDriveCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drive.drive();
+		drive.drive();
 		//System.out.println(Robot.sensors.getDis());
 		//System.out.println("Joystick Y axis: " + OI.driveStickZero.getY());
 	} 

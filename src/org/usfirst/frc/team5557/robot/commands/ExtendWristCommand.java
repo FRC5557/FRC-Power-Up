@@ -2,6 +2,7 @@ package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
 import org.usfirst.frc.team5557.robot.RobotMap;
+import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -10,6 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ExtendWristCommand extends Command{
 
+	private ArmSubsystem arm = ArmSubsystem.getInstance();
+	
 	
 	@Override
 	protected void initialize() {
@@ -18,7 +21,7 @@ public class ExtendWristCommand extends Command{
 
 	@Override
 	protected void execute() {
-		Robot.arm.extend();
+		arm.extend();
 		
 		
 	} 
@@ -30,7 +33,7 @@ public class ExtendWristCommand extends Command{
 	
 	@Override
 	protected void end() {
-		Robot.arm.wristPower = -.1;
+		arm.wristPower = -.1;
 	}
 	
 }

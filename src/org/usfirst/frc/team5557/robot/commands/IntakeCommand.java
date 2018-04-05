@@ -2,11 +2,14 @@ package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
 import org.usfirst.frc.team5557.robot.RobotMap;
+import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class IntakeCommand extends Command{
 
+	private ArmSubsystem arm = ArmSubsystem.getInstance();
+	
 	int motor;
 	
 	public IntakeCommand(int motor) {
@@ -20,12 +23,12 @@ public class IntakeCommand extends Command{
 
 	@Override
 	protected void execute() {
-		Robot.arm.intake(motor);
+		arm.intake(motor);
 	} 
 	
 	@Override
 	protected boolean isFinished() {
-		if(!(Robot.arm.getLimSwitchStatus(RobotMap.INTAKE_LIMIT_SWITCH))){
+		if(!(arm.getLimSwitchStatus(RobotMap.INTAKE_LIMIT_SWITCH))){
 			return true;
 		}
 		return false;
@@ -33,6 +36,6 @@ public class IntakeCommand extends Command{
 	
 	@Override
 	protected void end() {
-		Robot.arm.stop();
+		arm.stop();
 	}
 }

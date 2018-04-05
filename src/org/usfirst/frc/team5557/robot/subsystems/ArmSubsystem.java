@@ -12,7 +12,21 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 
+/**
+* This class in a Singleton, this means that it can only be instanced once.
+* This is done in order to prevent clashes in access to things like sensor values and motor outputs.
+* To instantiated this class you must call its static getInstance() method.
+* 	The first time getInstance is called it will return a new instance of this class,
+* 	every time after that it will return the same instance as the first time
+* This class can not be instantiated using new because the constructor is private
+* 
+* This class handles the motor controllers for the arm, wrist, and intake motors
+* 
+*/
+
 public class ArmSubsystem extends Subsystem{
+	
+	private static ArmSubsystem instance = null;
 	
 	WPI_TalonSRX lowerLeft = new WPI_TalonSRX(RobotMap.LOWER_ARM_MOTOR_LEFT);
 	WPI_TalonSRX lowerRight = new WPI_TalonSRX(RobotMap.LOWER_ARM_MOTOR_RIGHT);
@@ -28,6 +42,17 @@ public class ArmSubsystem extends Subsystem{
 
 	DigitalInput[] limSwitches = new DigitalInput[10];
 	public static double wristPower = -.1;
+	
+	public static ArmSubsystem getInstance() {
+		if(instance == null) {
+			instance = new ArmSubsystem();
+		}
+		return instance;
+	}
+	
+	private ArmSubsystem() {
+		System.out.println("ArmSubsystem instantiated");
+	}
 	
 	@Override
 	protected void initDefaultCommand() {

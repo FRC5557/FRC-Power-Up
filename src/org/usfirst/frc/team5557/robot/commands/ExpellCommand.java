@@ -1,11 +1,14 @@
 package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
+import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ExpellCommand extends Command {
 
+	private ArmSubsystem arm = ArmSubsystem.getInstance();
+	
 	int motor;
 	
 	public ExpellCommand(int motor) {
@@ -19,7 +22,7 @@ public class ExpellCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.arm.expell(motor);
+		arm.expell(motor);
 		
 	
 	} 
@@ -31,6 +34,6 @@ public class ExpellCommand extends Command {
 	
 	@Override
 	protected void end() {
-		Robot.arm.stop();
+		arm.stop();
 	}
 }

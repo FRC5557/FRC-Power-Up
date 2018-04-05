@@ -14,16 +14,18 @@ public class ShootBoxCommand extends Command{
 //	WPI_TalonSRX intakeMotortRight = new WPI_TalonSRX(RobotMap.INTAKE_MOTOR_RIGHT);
 //	SpeedControllerGroup intake = new SpeedControllerGroup(intaketMotortLeft, intakeMotortRight);
 	
+	private ArmSubsystem arm = ArmSubsystem.getInstance();
+	
 	
 	@Override
 	protected void initialize() {
-		requires(Robot.arm);
+		requires(arm);
 	}
 
 	@Override
 	protected void execute() {
-		Robot.arm.shoot(RobotMap.INTAKE_MOTOR_LEFT);
-		Robot.arm.shoot(RobotMap.INTAKE_MOTOR_RIGHT);
+		arm.shoot(RobotMap.INTAKE_MOTOR_LEFT);
+		arm.shoot(RobotMap.INTAKE_MOTOR_RIGHT);
 		
 	} 
 	
@@ -34,7 +36,7 @@ public class ShootBoxCommand extends Command{
 	
 	@Override
 	protected void end() {
-		Robot.arm.wristPower = -.1;
+		arm.wristPower = -.1;
 	}
 	
 }

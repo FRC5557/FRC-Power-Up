@@ -15,9 +15,25 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 
+/**
+* This class in a Singleton, this means that it can only be instanced once.
+* This is done in order to prevent clashes in access to things like sensor values and motor outputs.
+* To instantiated this class you must call its static getInstance() method.
+* 	The first time getInstance is called it will return a new instance of this class,
+* 	every time after that it will return the same instance as the first time
+* This class can not be instantiated using new because the constructor is private
+* 
+* This class handles the motor controllers for the drivetrain
+* 
+*/
+
 
 public class DriveSubSystem extends Subsystem{
 
+	private static DriveSubSystem instance = null;
+	
+	private ControllerSubsystem control = ControllerSubsystem.getInstance();
+	
 	private WPI_TalonSRX leftFrontTal = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
 	private WPI_TalonSRX leftRearTal = new WPI_TalonSRX(RobotMap.LEFT_REAR_MOTOR);
 	private WPI_TalonSRX rightFrontTal = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
@@ -30,8 +46,15 @@ public class DriveSubSystem extends Subsystem{
 	public double left, right;
 	int layoutInt;
 
-	public DriveSubSystem() {
-		
+	public static DriveSubSystem getInstance() {
+		if(instance == null) {
+			instance = new DriveSubSystem();
+		}
+		return instance;
+	}
+	
+	private DriveSubSystem() {
+		System.out.println("ControllerSubsystem instantiated");
 		// Set up Talon SRX controllers
 
 		for (MotorType m : MotorType.values()) {
@@ -65,17 +88,15 @@ public class DriveSubSystem extends Subsystem{
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new ManualDriveCommand());
-		Robot.control.setController(1);
+		control.setController(1);
 	}
 	
 	public void drive() {
-		//checkLayout();
-		layoutInt = Robot.control.getLayoutInt();
 		double turn = 0;
 		double throttle = 0;
 		//Controller Drive
 		turn = OI.driveStickZero.getX() > 0 ? OI.driveStickZero.getX()*1 : OI.driveStickOne.getX()*1;
-		throttle = Robot.control.getTrigerThrottle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
+		throttle = control.getTrigerThrottle(OI.driveStickZero.getTwist(), OI.driveStickZero.getThrottle());
 		difDrive.arcadeDrive(throttle,turn);
 	}
 	

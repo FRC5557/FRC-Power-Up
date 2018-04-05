@@ -1,11 +1,13 @@
 package org.usfirst.frc.team5557.robot.commands;
 
-import org.usfirst.frc.team5557.robot.Robot;
+import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class RetractWristCommand extends Command {
 
+	private ArmSubsystem arm = ArmSubsystem.getInstance();
+	
 	@Override
 	protected void initialize() {
 		//requires(Robot.arm);
@@ -13,7 +15,7 @@ public class RetractWristCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.arm.retract();
+		arm.retract();
 		
 	
 	} 
@@ -25,7 +27,7 @@ public class RetractWristCommand extends Command {
 	
 	@Override
 	protected void end() {
-		Robot.arm.wristPower = -.1;
+		arm.wristPower = -.1;
 	}
 
 }

@@ -2,6 +2,8 @@ package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
 import org.usfirst.frc.team5557.robot.RobotMap;
+import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
+import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,13 +13,17 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 //Basic autonomous turning using Encoders
 //
 public class TurnForAngleCommand extends Command {
+	
+	private SensorSubsystem sensors = SensorSubsystem.getInstance();
+	private DriveSubSystem drive = DriveSubSystem.getInstance();
+	
 	private double angleInTicks;
 	private boolean pastF1;
 	long millis;
 	int timeToRun;
 
 	public TurnForAngleCommand(double angle) {
-		requires(Robot.drive);
+		requires(drive);
 		//angleInTicks = angle > 0 ? ((((RobotMap.ROBOT_DIAMETER*Math.PI)/360)*(angle+90)+30)/RobotMap.WHEEL_CIRC)*4096 : ((((RobotMap.ROBOT_DIAMETER*Math.PI)/360)*(angle-90)-30)/RobotMap.WHEEL_CIRC)*4096;
 		System.out.println(angleInTicks);
 		timeToRun = 2000;
@@ -28,7 +34,7 @@ public class TurnForAngleCommand extends Command {
 	@Override
 	protected void initialize() {
 		millis = System.currentTimeMillis();
-		Robot.sensors.resetEncoders();
+		sensors.resetEncoders();
 	}
 
 	
@@ -38,17 +44,17 @@ public class TurnForAngleCommand extends Command {
 	 
 	@Override
 	protected void execute() {
-		Robot.drive.computerDrive(0, -.2);
+		drive.computerDrive(0, -.2);
 	/*	if (angleInTicks > 0){
-			if(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= angleInTicks) {
+			if(drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= angleInTicks) {
 				pastF1 = true;
-				Robot.drive.computerDrive(0, -.5);
-			}else{Robot.drive.computerDrive(0,.7);}
+				drive.computerDrive(0, -.5);
+			}else{drive.computerDrive(0,.7);}
 		} else {
-			if(Robot.drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition() >= -angleInTicks) {
+			if(drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition() >= -angleInTicks) {
 				pastF1 = true;
-				Robot.drive.computerDrive(0, .5);
-			}else{Robot.drive.computerDrive(0,-.7);}	
+				drive.computerDrive(0, .5);
+			}else{drive.computerDrive(0,-.7);}	
 		}*/
 	}
 
@@ -58,19 +64,19 @@ public class TurnForAngleCommand extends Command {
 	 
 /*	@Override
 	protected boolean isFinished() {
-		System.out.println(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() + ", " + angleInTicks);
+		System.out.println(drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() + ", " + angleInTicks);
 		if (angleInTicks > 0){
-			if(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= 3000){
+			if(drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= 3000){
 				return true;
 			}
-			if (1*(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition()) <= -angleInTicks) {
+			if (1*(drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition()) <= -angleInTicks) {
 				return true;
 			}
 			else{ 
 				return false;
 			}
 		}else {
-			if (Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() <= -3000) {
+			if (drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() <= -3000) {
 				return true;
 			}
 		}
@@ -79,13 +85,13 @@ public class TurnForAngleCommand extends Command {
 	
 /*	@Override
 	protected boolean isFinished() {
-		System.out.println(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() + ", " + -angleInTicks);
+		System.out.println(drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() + ", " + -angleInTicks);
 		if(angleInTicks>0){
-			if (pastF1 && Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= -angleInTicks-5) {
+			if (pastF1 && drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition() >= -angleInTicks-5) {
 				return true;
 			}
 		}else{
-			if (pastF1 && Robot.drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition() <= -angleInTicks+5) {
+			if (pastF1 && drive.getTalonSensorC(MotorType.kRearLeft).getQuadraturePosition() <= -angleInTicks+5) {
 				return true;
 			}
 		}
@@ -107,6 +113,6 @@ public class TurnForAngleCommand extends Command {
 
 	@Override
 	protected void end() {
-		Robot.drive.stop();
+		drive.stop();
 	}
 }

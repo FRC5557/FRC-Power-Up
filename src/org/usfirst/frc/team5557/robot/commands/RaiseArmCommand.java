@@ -1,11 +1,14 @@
 package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
+import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class RaiseArmCommand extends Command{
 
+	private ArmSubsystem arm = ArmSubsystem.getInstance();
+	
 	long millis;
 	int timeToRun;
 	public RaiseArmCommand(int timeInMs) {
@@ -14,13 +17,13 @@ public class RaiseArmCommand extends Command{
 	
 	@Override
 	protected void initialize() {
-		//requires(Robot.arm);
+		//requires(arm);
 		millis = System.currentTimeMillis();
 	}
 
 	@Override
 	protected void execute() {
-		Robot.arm.raise(.5);
+		arm.raise(.5);
 		
 	} 
 	
@@ -36,7 +39,7 @@ public class RaiseArmCommand extends Command{
 	
 	@Override
 	protected void end() {
-		Robot.arm.stop();
+		arm.stop();
 	}
 
 }

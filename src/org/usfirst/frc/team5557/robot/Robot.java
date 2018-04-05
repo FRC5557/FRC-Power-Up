@@ -58,10 +58,10 @@ import utils.ADIS16448_IMU;
  */
 public class Robot extends IterativeRobot {
 	
-	public static final DriveSubSystem drive = new DriveSubSystem();
-	public static final SensorSubsystem sensors = new SensorSubsystem();
-	public static final ArmSubsystem arm = new ArmSubsystem();
-	public static final ControllerSubsystem control = new ControllerSubsystem();
+	private static final DriveSubSystem drive = DriveSubSystem.getInstance();
+	private static final SensorSubsystem sensors = SensorSubsystem.getInstance();
+	private static final ArmSubsystem arm = ArmSubsystem.getInstance();
+	private static final ControllerSubsystem control = ControllerSubsystem.getInstance();
 	
 
 	public static final MotionProfileSubsystem mp = new MotionProfileSubsystem(new RightAutoLineCubeMotionProfile());

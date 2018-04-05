@@ -2,11 +2,14 @@ package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.OI;
 import org.usfirst.frc.team5557.robot.Robot;
+import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SwapDriveComand extends Command {
 
+	private ControllerSubsystem control = ControllerSubsystem.getInstance();
+	
 	String layout;
 	int layoutInt;
 	int eee=0;
@@ -30,8 +33,8 @@ public class SwapDriveComand extends Command {
 		}
 		System.out.println(layout + "fired");
 		
-		Robot.control.setLayoutInt(layoutInt);
-		Robot.control.setController(layoutInt);
+		control.setLayoutInt(layoutInt);
+		control.setController(layoutInt);
 		eee = 1;
 	}
 	

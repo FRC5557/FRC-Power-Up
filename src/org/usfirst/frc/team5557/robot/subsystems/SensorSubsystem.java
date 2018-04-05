@@ -8,44 +8,45 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-
 /**
- * Subsystem containing all sensors for the robot
- */
+* This class in a Singleton, this means that it can only be instanced once.
+* This is done in order to prevent clashes in access to things like sensor values and motor outputs.
+* To instantiated this class you must call its static getInstance() method.
+* 	The first time getInstance is called it will return a new instance of this class,
+* 	every time after that it will return the same instance as the first time
+* This class can not be instantiated using new because the constructor is private
+* 
+* This class handles getting data from sensors
+* 	Ultrasonics, Encoders, and limit switches
+* 
+*/
+
 public class SensorSubsystem extends Subsystem {
+	
+	private static SensorSubsystem instance = null;
+	private DriveSubSystem drive = DriveSubSystem.getInstance();
+	
 	public AnalogInput ultra = new AnalogInput(RobotMap.ULTRA_ANALOG);
 
-	public SensorSubsystem() {
-		//ultra.setAutomaticMode(true);
-		
-		// Correctly initialize and set up encoders
-		/*for (MotorType m : MotorType.values()) {
-			Robot.drive.getTalon(m).setFeedbackDevice(RobotMap.TALON_FEEDBACK_DEVICE);
-			Robot.drive.getTalon(m).configEncoderCodesPerRev(RobotMap.ENCODER_CODES_PER_REV);
-			Robot.drive.getTalon(m).reverseSensor(false);
-			Robot.drive.getTalon(m).setProfile(RobotMap.ENCODER_PROFILE);
-			Robot.drive.getTalon(m).setF(RobotMap.PID_FEEDFORWARD);
-			Robot.drive.getTalon(m).setPID(RobotMap.PID_PROPORTIONAL, RobotMap.PID_INTEGRAL, RobotMap.PID_DERIVATIVE);
-			Robot.drive.getTalon(m).setCloseLoopRampRate(RobotMap.CLOSED_LOOP_RAMP_RATE);
-			//Robot.drive.getTalon(m).setIzone(RobotMap.INTEGRAL_ZONE);
-		}*/
-		
+	public static SensorSubsystem getInstance() {
+		if(instance == null) {
+			instance = new SensorSubsystem();
+		}
+		return instance;
+	}
+	
+	private SensorSubsystem() {
+		System.out.println("SensorSubsystem instantiated");
 	}
 
 	@Override
 	protected void initDefaultCommand() {
 	}
 
-	/**
-	 * For MaxBotix Ultrasonic
-	 * Converts the bits returned from the ultrasonic sensor into millimeters
-	 */
-	
 	/*
 	 * For MaxBotix Ultrasonic
 	 * Converts Voltage receieved from ultrasonic sensor into millimeters
 	 */
-	
 	public double getUltraWithVoltage() {
 		return (((ultra.getVoltage()*1000)/4.88)/2);
 	}
@@ -54,7 +55,7 @@ public class SensorSubsystem extends Subsystem {
 
 	public void resetEncoders() {
 		for (MotorType m : MotorType.values()) {
-			Robot.drive.getTalonSensorC(m).setQuadraturePosition(0, 0);
+			drive.getTalonSensorC(m).setQuadraturePosition(0, 0);
 		}
 	}
 
@@ -66,8 +67,8 @@ public class SensorSubsystem extends Subsystem {
 		//10.71:1 ration cim to hex shaft
 		//1:1 for hex shaft to wheels
 
-		int BR = -1*(Robot.drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition());
-		int FL = Robot.drive.getTalonSensorC(MotorType.kFrontLeft).getQuadraturePosition();
+		int BR = -1*(drive.getTalonSensorC(MotorType.kFrontRight).getQuadraturePosition());
+		int FL = drive.getTalonSensorC(MotorType.kFrontLeft).getQuadraturePosition();
 		
 		System.out.printf("Front Left %d, Back Right: %d \n", FL, BR);
 		
@@ -77,12 +78,12 @@ public class SensorSubsystem extends Subsystem {
 	
  
 	public double getDis(MotorType m) {
-		int encoder = Robot.drive.getTalonSensorC(m).getQuadraturePosition();
+		int encoder = drive.getTalonSensorC(m).getQuadraturePosition();
 		return (encoder/4096)*RobotMap.WHEEL_CIRC;
 	}
 
 	public double getSpeed(MotorType m) {
-		return Robot.drive.getTalonSensorC(m).getQuadratureVelocity();
+		return drive.getTalonSensorC(m).getQuadratureVelocity();
 	}
 
 }

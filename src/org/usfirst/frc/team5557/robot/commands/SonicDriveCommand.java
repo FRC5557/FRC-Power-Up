@@ -1,6 +1,8 @@
 package org.usfirst.frc.team5557.robot.commands;
 
 import org.usfirst.frc.team5557.robot.Robot;
+import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
+import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,13 +11,17 @@ import edu.wpi.first.wpilibj.command.Command;
 MaxBotix Ultrasonic
 */
 public class SonicDriveCommand extends Command {
+	
+	private SensorSubsystem sensors = SensorSubsystem.getInstance();
+	private DriveSubSystem drive = DriveSubSystem.getInstance();
+	
 	private double dis;
 	private double speed;
 	public SonicDriveCommand(double my_dis, double mspeed) {
 		dis = my_dis;
 		speed = mspeed;
-		requires(Robot.sensors);
-		requires(Robot.drive);
+		requires(sensors);
+		requires(drive);
 	}
 
 	@Override
@@ -25,12 +31,12 @@ public class SonicDriveCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drive.computerDrive(.5,0);
+		drive.computerDrive(.5,0);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		if (Robot.sensors.getUltraWithVoltage() <= dis) {
+		if (sensors.getUltraWithVoltage() <= dis) {
 			return true;
 		}
 		return false;
@@ -43,6 +49,6 @@ public class SonicDriveCommand extends Command {
 	@Override
 
 	protected void end() {
-		Robot.drive.stop();
+		drive.stop();
 	}
 }

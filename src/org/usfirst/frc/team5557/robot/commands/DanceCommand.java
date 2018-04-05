@@ -1,20 +1,23 @@
 package org.usfirst.frc.team5557.robot.commands;
 
-import org.usfirst.frc.team5557.robot.Robot;
+import org.usfirst.frc.team5557.robot.subsystems.DriveSubSystem;
+import org.usfirst.frc.team5557.robot.subsystems.SensorSubsystem;
 
-import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  * Basic Linear Movement in Autonomous
  */
 public class DanceCommand extends Command {
+	
+	private SensorSubsystem sensors = SensorSubsystem.getInstance();
+	private DriveSubSystem drive = DriveSubSystem.getInstance();
+	
 	private double speed;
 	private long time;
 	private long initial;
 	public DanceCommand(double speed, long time) {
-		requires(Robot.drive);
+		requires(drive);
 		this.speed = speed;
 		this.time = time;
 		initial = System.currentTimeMillis();
@@ -22,14 +25,14 @@ public class DanceCommand extends Command {
 
 	@Override
 	protected void initialize() {
-		Robot.sensors.resetEncoders();
+		sensors.resetEncoders();
 	}
 
 	@Override
 	protected void execute() {
 
 		System.out.println("dance" + speed + " " + initial + " " + time);
-		Robot.drive.computerDrive(0,speed);
+		drive.computerDrive(0,speed);
 	}
 
 	@Override
@@ -46,6 +49,6 @@ public class DanceCommand extends Command {
 
 	@Override
 	protected void end() {
-		Robot.drive.stop();
+		drive.stop();
 	}
 }
