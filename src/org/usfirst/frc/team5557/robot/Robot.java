@@ -24,14 +24,21 @@ import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5557.robot.commands.SwapDriveComand;
 import org.usfirst.frc.team5557.robot.commands.autogroups.LeftAutoLine;
 import org.usfirst.frc.team5557.robot.commands.autogroups.LeftRightSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftStartDiffSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftStartSameScale;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftStartDiffScale;
+import org.usfirst.frc.team5557.robot.commands.autogroups.LeftStartSameSwitch;
 import org.usfirst.frc.team5557.robot.commands.autogroups.LeftSwitch;
 import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleAutoLine;
 import org.usfirst.frc.team5557.robot.commands.autogroups.AutoLine;
 import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleLeftSwitch;
 import org.usfirst.frc.team5557.robot.commands.autogroups.MiddleRightSwitch;
-import org.usfirst.frc.team5557.robot.commands.autogroups.SwitchOnSameSide;
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightStartSameSwitch;
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightAutoLineTalon;
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightLeftSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightStartDiffSwitch;
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightStartDiffScale;
+import org.usfirst.frc.team5557.robot.commands.autogroups.RightStartSameScale;
 import org.usfirst.frc.team5557.robot.commands.autogroups.RightSwitch;
 import org.usfirst.frc.team5557.robot.subsystems.ArmSubsystem;
 import org.usfirst.frc.team5557.robot.subsystems.ControllerSubsystem;
@@ -166,7 +173,7 @@ public class Robot extends IterativeRobot {
 	 * chooser code works with the Java SmartDashboard. If you prefer the
 	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
 	 * getString code to get the auto name from the text box below the Gyro
-	 *
+	 * 
 	 * You can add additional auto modes by adding additional commands to the
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the switch structure below with additional strings & commands.
@@ -174,91 +181,65 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		
-		//TODO: ADD INPUT / OTHER WAY TO DETERMINE OR ENTER STARTING POSITION ON startingPosition
+		
+		/*
+		 * 
+		 * All autonomous cases are represented in this 3 dimensional array
+		 * 
+		 * This two dimensional array shows how 
+		 *     ________________________________________________
+		 *    /										  		  /|
+		 *   /-----------------------------------------------/ |
+		 *  /_______________________________________________/  |
+		 *  |              |                |			   |   |
+		 *  | Right Auto   | Right Switch   | SideR ScaleS |   |
+		 *  |              |                |    		   |   |
+		 *  |              |                |	   Middle S|cale|
+		 *  | Middle Auto  | Middle Switch  | Middle Scale |   |
+		 *  |              |                |			   |   |
+		 *  |              |                | 			   |  /
+		 *  | Left Auto    | Left Switch    | Left Scale   | / 
+		 *  |______________|________________|______________|/
+		 * 
+		 * 
+		 */
+		
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		int startPos = (int) SmartDashboard.getNumber("Position", 0);
+		int objective = autonObjectiveChooser.getSelected().intValue();
+		
+		CommandGroup autonPositions[][][] = {
+				{ 	//row zero Autoline
+					{new AutoLine(), new AutoLine()}, //right start
+					{new AutoLine(), new AutoLine()}, //middle start
+					{new AutoLine(), new AutoLine()}  //left start
+				},
+				{	//row one Switch
+					{new RightStartSameSwitch(), new RightStartDiffSwitch()}, //right start
+					{new AutoLine(), new AutoLine()}, //accessing the switch form a center start position is a pain, just cross the autoline
+					{new LeftStartSameSwitch(), new LeftStartDiffSwitch()}, //left start
+				},
+				{	//row two Scale
+					{new RightStartSameScale(), new RightStartDiffScale()}, //right start
+					{new AutoLine(), new AutoLine()},  //accessing the scale form a center start position is a pain, just cross the autoline
+					{new LeftStartSameScale(), new LeftStartDiffScale()}	//left start
+				}
+		};
+		
+		if(objective !=0 && startPos != 1) {
+			char sSide = (startPos == 0) ? 'R' : 'L'; //this code should never be run when startPos isn't either 0 or 2 so we only need to check if startPos is zero 
+			if(gameData.charAt(objective-1)== sSide) {
+				autonomousCommand = autonPositions[objective][startPos][0];
+			}else {
+				autonomousCommand = autonPositions[objective][startPos][1];
+			}
+		}else {
+			autonomousCommand = autonPositions[objective][startPos][0];
+		}
 		
 		imu.reset();
 		//autonomousCommand = autonObjectiveChooser.getSelected();
 		//drive.autonTalonInit(NeutralMode.Brake)
-		String gameData;
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		int startPos = (int) SmartDashboard.getNumber("Position", 0);
-		if(startPos == 0){
-			if(gameData != null){
-				if(autonObjectiveChooser.getSelected().intValue() == 0){ //autoline
-					if(gameData.charAt(0) == 'R'){
-						System.out.println("Caught FMS data Right");
-						autonomousCommand = new AutoLine();
-					} else if(gameData.charAt(0) == 'L'){
-						autonomousCommand = new AutoLine();
-					}
-				}else if(autonObjectiveChooser.getSelected().intValue() == 1){ //switch
-					if(gameData.charAt(0) == 'R'){
-						System.out.println("Caught FMS data Right");
-						autonomousCommand = new SwitchOnSameSide();
-					} else if(gameData.charAt(0) == 'L'){
-						autonomousCommand = new SwitchOnSameSide();
-					}
-				}else if(autonObjectiveChooser.getSelected().intValue() == 2){ //scale
-					if(gameData.charAt(0) == 'R'){
-						System.out.println("Caught FMS data Right");
-						autonomousCommand = new AutoLine();
-					} else if(gameData.charAt(0) == 'L'){
-						autonomousCommand = new AutoLine();
-					}
-				}
-			}
-		}else if(startPos == 1){
-			if(gameData != null){
-				if(autonObjectiveChooser.getSelected().intValue() == 0){ //autoline
-					if(gameData.charAt(0) == 'R'){
-						System.out.println("Caught FMS data Right");
-						autonomousCommand = new AutoLine();
-					} else if(gameData.charAt(0) == 'L'){
-						autonomousCommand = new AutoLine();
-					}
-				}else if(autonObjectiveChooser.getSelected().intValue() == 1){ //switch
-					if(gameData.charAt(0) == 'R'){
-						System.out.println("Caught FMS data Right");
-						autonomousCommand = new SwitchOnSameSide();
-					} else if(gameData.charAt(0) == 'L'){
-						autonomousCommand = new SwitchOnSameSide();
-					}
-				}else if(autonObjectiveChooser.getSelected().intValue() == 2){ //scale
-					if(gameData.charAt(0) == 'R'){
-						System.out.println("Caught FMS data Right");
-						autonomousCommand = new AutoLine();
-					} else if(gameData.charAt(0) == 'L'){
-						autonomousCommand = new AutoLine();
-					}
-				}
-			}
-		}else if(startPos == 2){
-				if(gameData != null){
-					if(autonObjectiveChooser.getSelected().intValue() == 0){ //autoline
-						if(gameData.charAt(0) == 'R'){
-							System.out.println("Caught FMS data Right");
-							autonomousCommand = new AutoLine();
-						} else if(gameData.charAt(0) == 'L'){
-							autonomousCommand = new AutoLine();
-						}
-					}else if(autonObjectiveChooser.getSelected().intValue() == 1){ //switch
-						if(gameData.charAt(0) == 'R'){
-							System.out.println("Caught FMS data Right");
-							autonomousCommand = new SwitchOnSameSide();
-						} else if(gameData.charAt(0) == 'L'){
-							autonomousCommand = new SwitchOnSameSide();
-						}
-					}else if(autonObjectiveChooser.getSelected().intValue() == 2){ //scale
-						if(gameData.charAt(0) == 'R'){
-							System.out.println("Caught FMS data Right");
-							autonomousCommand = new AutoLine();
-						} else if(gameData.charAt(0) == 'L'){
-							autonomousCommand = new AutoLine();
-						}
-					}
-				}
-		}
-		
 		if(autonomousCommand != null){
 				autonomousCommand.start();
 		}

@@ -7,8 +7,8 @@ import org.usfirst.frc.team5557.robot.commands.TurnForAngleCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class SwitchOnSameSide extends CommandGroup {
-	public SwitchOnSameSide(){
+public class RightStartSameSwitch extends CommandGroup {
+	public RightStartSameSwitch(){
 		System.out.println("Stating Right auton");
 		addSequential(new DriveForDistanceCommand(470));// Drive forward for 15 ft
 		addSequential(new TurnForAngleCommand(40));
